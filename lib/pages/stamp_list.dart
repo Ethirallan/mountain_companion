@@ -156,7 +156,7 @@ class MyStampListState extends State<MyStampList> {
                                                                                       onPressed:
                                                                                           () {
                                                                                         Navigator.pop(context);
-                                                                                        takePhoto(1, snapshot.data[index].id, snapshot.data[index].name);
+                                                                                        takeNewPhoto(1, snapshot.data[index].id, snapshot.data[index].name);
                                                                                       },
                                                                                     ),
                                                                                   ),
@@ -176,7 +176,7 @@ class MyStampListState extends State<MyStampList> {
                                                                                       onPressed:
                                                                                           () {
                                                                                         Navigator.pop(context);
-                                                                                        takePhoto(2, snapshot.data[index].id, snapshot.data[index].name);
+                                                                                        takeNewPhoto(2, snapshot.data[index].id, snapshot.data[index].name);
                                                                                       },
                                                                                     ),
                                                                                   ),
@@ -355,7 +355,7 @@ class MyStampListState extends State<MyStampList> {
     );
   }
 
-  takePhoto(int x, int index, String name) async {
+  takeNewPhoto(int x, int index, String name) async {
     Stamp stamp2 = Stamp();
     stamp2.id = index;
     stamp2.name = name;

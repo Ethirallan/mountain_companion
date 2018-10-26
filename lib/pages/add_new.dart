@@ -7,21 +7,76 @@ class AddNew extends StatefulWidget {
   }
 }
 
-class AddNewState extends State <AddNew> {
+class AddNewState extends State<AddNew> {
+  TextEditingController titleCtr;
+  TextEditingController dateCtr;
+  TextEditingController timeCtr;
+  TextEditingController heightCtr;
+  TextEditingController locationCtr;
+  TextEditingController noteCtr;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dodaj nov izlet"),
+        title: Text(
+          "Dodaj nov izlet",
+          style: TextStyle(fontSize: 26.0),
+        ),
       ),
       body: Container(
         padding: EdgeInsets.all(16.0),
         child: ListView(
-
+          children: <Widget>[
+            buildCard('Naslov:', 'Vnesite naslov', titleCtr),
+            buildCard('Lokacija:', 'Vnesite lokacijo', locationCtr),
+            buildCard('Čas hoje:', 'Vnesite čas', timeCtr),
+            buildCard(
+                'Višinska razlika:', 'Vnesite višinsko razliko', heightCtr),
+            buildCard('Opis:', 'Vnesite opis', noteCtr),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Card(
+                    elevation: 4.0,
+                    child: Container(
+                      padding: EdgeInsets.all(4.0),
+                      child: FlatButton(
+                        onPressed: _cancel,
+                        child: Text(
+                          'Prekliči',
+                          style: TextStyle(fontSize: 22.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Card(
+                    elevation: 4.0,
+                    child: Container(
+                      padding: EdgeInsets.all(4.0),
+                      child: FlatButton(
+                        onPressed: _saveToDB,
+                        child: Text(
+                          'Shrani',
+                          style: TextStyle(fontSize: 22.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
+
+  void _cancel() {}
+
+  void _saveToDB() {}
 }
 
 Widget buildCard(String title, String hint, TextEditingController controller) {
