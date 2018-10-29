@@ -24,6 +24,7 @@ class MyWishListState extends State<MyWishList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         title: Text(
           'Seznam želja',

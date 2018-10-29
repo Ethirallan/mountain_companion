@@ -25,6 +25,7 @@ class HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         title: Text(
           'Gorski spremljevalec',

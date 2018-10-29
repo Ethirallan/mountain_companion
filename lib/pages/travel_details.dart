@@ -19,6 +19,7 @@ class TravelDetailsState extends State<TravelDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       body: FutureBuilder(
         future: getTravelInfo(),
         builder: (context, snapshot) {
