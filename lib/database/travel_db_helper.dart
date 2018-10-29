@@ -26,7 +26,7 @@ class TravelDBHelper {
   
   void _onCreate(Database db, int version) async {
     await db.execute('CREATE TABLE $tableName(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, date TEXT, time TEXT,'
-            'location TEXT, notes TEXT, photo1 TEXT, photo2 TEXT, photo3 TEXT, photo4 TEXT, photo5 TEXT);');
+            'location TEXT, height TEXT, notes TEXT, photo1 TEXT, photo2 TEXT, photo3 TEXT, photo4 TEXT, photo5 TEXT);');
   }
 
   Future<List<Travel>> getTravels() async {
@@ -38,9 +38,11 @@ class TravelDBHelper {
       travel.id = list[i]['id'];
       travel.title = list[i]['title'];
       travel.date = list[i]['date'];
-      /*travel.time = list[i]['time'];
+      travel.time = list[i]['time'];
       travel.location = list[i]['location'];
+      travel.height = list[i]['height'];
       travel.notes = list[i]['notes'];
+      /*
       travel.photo1 = list[i]['photo1'];
       travel.photo2 = list[i]['photo2'];
       travel.photo3 = list[i]['photo3'];
@@ -54,8 +56,8 @@ class TravelDBHelper {
 
   void addNewTravel(Travel travel) async {
     var dbConnection = await db;
-    String query = 'INSERT INTO $tableName(title, date, time, location, notes, photo1, photo2, photo3, photo4, photo5) '
-            'VALUES(\'${travel.title}\', \'${travel.date}\', \'${travel.time}\', \'${travel.location}\', \'${travel.notes}\', '
+    String query = 'INSERT INTO $tableName(title, date, location, time, height, notes, photo1, photo2, photo3, photo4, photo5) '
+            'VALUES(\'${travel.title}\', \'${travel.date}\', \'${travel.location}\', \'${travel.time}\', \'${travel.height}\', \'${travel.notes}\', '
             '\'${travel.photo1}\', \'${travel.photo2}\', \'${travel.photo3}\', \'${travel.photo4}\', \'${travel.photo5}\')';
     await dbConnection.transaction((tran) async {
       return await tran.rawInsert(query);
@@ -65,8 +67,8 @@ class TravelDBHelper {
   void updateTravel(Travel travel) async {
     var dbConnection = await db;
     String query = 'UPDATE $tableName SET title=\'${travel.title}\', date=\'${travel.date}\', time=\'${travel.time}\','
-            'location=\'${travel.location}\', notes=\'${travel.notes}\', photo1=\'${travel.photo1}\', photo2=\'${travel.photo2}\','
-            'photo3=\'${travel.photo3}\', photo4=\'${travel.photo4}\', photo5=\'${travel.photo5}\' WHERE id=${travel.id}';
+        'location=\'${travel.location}\', height=\'${travel.height}\', notes=\'${travel.notes}\', photo1=\'${travel.photo1}\', photo2=\'${travel.photo2}\','
+        'photo3=\'${travel.photo3}\', photo4=\'${travel.photo4}\', photo5=\'${travel.photo5}\' WHERE id=${travel.id}';
     await dbConnection.transaction((tran) async {
       return await tran.rawQuery(query);
     });
@@ -78,13 +80,5 @@ class TravelDBHelper {
     await dbConnection.transaction((tran) async {
       return await tran.rawQuery(query);
     });
-  }
-
-  void addOne() {
-    Travel travel = new Travel();
-    travel.title = "Triglavska jezera";
-    travel.date = "3.9.2018";
-    travel.location = "Triglavski park";
-    addNewTravel(travel);
   }
 }

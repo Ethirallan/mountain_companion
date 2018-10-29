@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mountain_companion/database/travel_db_helper.dart';
+import 'package:mountain_companion/models/travel.dart';
 
 class AddNew extends StatefulWidget {
   @override
@@ -83,7 +85,22 @@ class AddNewState extends State<AddNew> {
   }
 
   void _saveToDB() {
-
+    var dbHelper = new TravelDBHelper();
+    Travel travel = new Travel();
+    travel.title = titleController.text;
+    titleController.text = '';
+    travel.date = dateController.text;
+    dateController.text = '';
+    travel.location = locationController.text;
+    locationController.text = '';
+    travel.time = timeController.text;
+    timeController.text = '';
+    travel.height = heightController.text;
+    heightController.text = '';
+    travel.notes = notesController.text;
+    notesController.text = '';
+    dbHelper.addNewTravel(travel);
+    Navigator.pop(context);
   }
 
   Widget buildCard(String title, String hint, TextEditingController controller, TextInputType input) {

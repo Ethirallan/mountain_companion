@@ -111,6 +111,17 @@ class HistoryState extends State<History> {
                               ),
                             ),
                             Container(
+                              padding: EdgeInsets.only(bottom: 8.0),
+                              child: Text(
+                                snapshot.data[index].location,
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            Container(
                               padding: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
                               child: Image.network(
                                   'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg'),
@@ -128,8 +139,6 @@ class HistoryState extends State<History> {
               } else if (snapshot.data.length == 0) {
                 return Text('Ni podatkov');
               }
-            } else {
-              TravelDBHelper().addOne();
             }
             return Container(
               alignment: AlignmentDirectional.center,
