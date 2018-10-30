@@ -9,6 +9,8 @@ Future<List<Travel>> getTravelInfo() {
 }
 
 class TravelDetails extends StatefulWidget {
+  final int myInt;
+  TravelDetails({this.myInt});
   @override
   State<StatefulWidget> createState() {
     return TravelDetailsState();
@@ -20,7 +22,7 @@ class TravelDetailsState extends State<TravelDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
-      body: FutureBuilder(
+      body: FutureBuilder<List<Travel>>(
         future: getTravelInfo(),
         builder: (context, snapshot) {
           if (snapshot.data != null) {
@@ -33,7 +35,7 @@ class TravelDetailsState extends State<TravelDetails> {
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
                       title: Text(
-                        'Triglavska jezera',
+                        snapshot.data[widget.myInt].title,
                         style: TextStyle(),
                       ),
                       background: Image.network(
@@ -53,14 +55,11 @@ class TravelDetailsState extends State<TravelDetails> {
                           padding: EdgeInsets.all(8.0),
                           child: Column(
                             children: <Widget>[
-                              buildDataCard('Datum:', '13.8.2018'),
-                              buildDataCard('Lokacija:', 'Triglavski narodni park'),
-                              buildDataCard('Čas hoje:', '5h 30min'),
-                              buildDataCard('Višinska razlika:', '529m'),
-                              buildDataCard(
-                                  'Zapiski:',
-                                  'Bil je čudovit, sončen dan. Na pot smo se opravili že ob pol 5ih zjutraj'
-                                      'in imeli malico pri Koči ob 8:30. Domov smo prišli malce čez 4 uro popoldne.'),
+                              buildDataCard('Datum:', snapshot.data[widget.myInt].date),
+                              buildDataCard('Lokacija:', snapshot.data[widget.myInt].location),
+                              buildDataCard('Čas hoje:', snapshot.data[widget.myInt].time),
+                              buildDataCard('Višinska razlika:', snapshot.data[widget.myInt].height),
+                              buildDataCard('Zapiski:', snapshot.data[widget.myInt].notes),
                               gallery(),
                             ],
                           ),

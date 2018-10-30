@@ -10,12 +10,12 @@ class AddNew extends StatefulWidget {
 }
 
 class AddNewState extends State<AddNew> {
-  TextEditingController titleController;
-  TextEditingController dateController;
-  TextEditingController locationController;
-  TextEditingController timeController;
-  TextEditingController heightController;
-  TextEditingController notesController;
+  final TextEditingController titleController = new TextEditingController();
+  final TextEditingController dateController = new TextEditingController();
+  final TextEditingController locationController = new TextEditingController();
+  final TextEditingController timeController = new TextEditingController();
+  final TextEditingController heightController = new TextEditingController();
+  final TextEditingController notesController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -85,20 +85,14 @@ class AddNewState extends State<AddNew> {
   }
 
   void _saveToDB() {
-    var dbHelper = new TravelDBHelper();
     Travel travel = new Travel();
+    var dbHelper = new TravelDBHelper();
     travel.title = titleController.text;
-    titleController.text = '';
     travel.date = dateController.text;
-    dateController.text = '';
     travel.location = locationController.text;
-    locationController.text = '';
     travel.time = timeController.text;
-    timeController.text = '';
     travel.height = heightController.text;
-    heightController.text = '';
     travel.notes = notesController.text;
-    notesController.text = '';
     dbHelper.addNewTravel(travel);
     Navigator.pop(context);
   }
@@ -125,6 +119,7 @@ class AddNewState extends State<AddNew> {
             child: TextField(
               textCapitalization: TextCapitalization.sentences,
               keyboardType: input,
+              controller: controller,
               maxLines: null,
               decoration: InputDecoration(
                   hintText: hint,
