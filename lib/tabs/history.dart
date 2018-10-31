@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mountain_companion/database/travel_db_helper.dart';
+import 'package:mountain_companion/helper/constants.dart';
 import 'dart:async';
 import 'package:mountain_companion/models/travel.dart';
 import 'package:mountain_companion/pages/wish_list.dart';
@@ -33,40 +34,15 @@ class HistoryState extends State<History> {
         ),
         actions: <Widget>[
           PopupMenuButton(
+            onSelected: pickAction,
             icon: Icon(Icons.more_vert),
             itemBuilder: (BuildContext ctx) {
-              return <PopupMenuEntry>[
-                PopupMenuItem(
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyWishList()));
-                    },
-                    child: Text(
-                      'Seznam želja',
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ),
-                PopupMenuItem(
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyStampList()));
-                    },
-                    child: Text(
-                      'Zbirka žigov',
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ),
-              ];
+              return Constants.pages.map((String page) {
+                return PopupMenuItem<String>(
+                  value: page,
+                  child: Text(page, style: TextStyle(fontSize: 20.0),),
+                );
+              }).toList();
             },
           ),
         ],
@@ -95,7 +71,7 @@ class HistoryState extends State<History> {
                                 style: TextStyle(
                                   fontSize: 24.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Colors.blueGrey,
                                 ),
                               ),
                             ),
@@ -106,7 +82,7 @@ class HistoryState extends State<History> {
                                 style: TextStyle(
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.normal,
-                                  color: Colors.black,
+                                  color: Colors.blueGrey,
                                 ),
                               ),
                             ),
@@ -121,7 +97,7 @@ class HistoryState extends State<History> {
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => TravelDetails(myInt: index,))),
+                              builder: (context) => TravelDetails(myInt: index, travelID: snapshot.data[index].id))),
                     );
                   },
                 );
@@ -152,5 +128,13 @@ class HistoryState extends State<History> {
         backgroundColor: Colors.blue,
       ),
     );
+  }
+
+  void pickAction(String page) {
+    if (page == Constants.wishList) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MyWishList()));
+    } else if (page == Constants.stamps) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MyStampList()));
+    }
   }
 }

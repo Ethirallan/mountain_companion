@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mountain_companion/database/stamp_db_helper.dart';
+import 'package:mountain_companion/helper/confirmation_alert.dart';
 import 'dart:async';
 import 'package:mountain_companion/models/stamp.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:convert';
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 Future<List<Stamp>> getStampsFromDB() async {
   var dbHelper = StampDBHelper();
@@ -51,8 +52,7 @@ class MyStampListState extends State<MyStampList> {
                               padding: EdgeInsets.all(10.0),
                               child: snapshot.data[index].img == null
                                   ? Text('No image selected.')
-                                  : Image.memory(Base64Codec()
-                                      .decode(snapshot.data[index].img)),
+                                  : Image.file(File(snapshot.data[index].img)),
                             ),
                           ),
                           Expanded(
@@ -76,219 +76,12 @@ class MyStampListState extends State<MyStampList> {
                                           showDialog(
                                             barrierDismissible: false,
                                             context: context,
-                                            builder: (_) => AlertDialog(
-                                                  contentPadding:
-                                                      EdgeInsets.fromLTRB(16.0,
-                                                          10.0, 16.0, 10.0),
-                                                  content:
-                                                      SingleChildScrollView(
-                                                    child: Center(
-                                                      child: Container(
-                                                        padding: EdgeInsets.all(
-                                                            16.0),
-                                                        child: Text(
-                                                          'Kaj želite spremeniti?',
-                                                          style: TextStyle(
-                                                              fontSize: 22.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  actions: <Widget>[
-                                                    FlatButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text(
-                                                        'PREKLIČI',
-                                                        style: TextStyle(
-                                                            fontSize: 16.0),
-                                                      ),
-                                                    ),
-                                                    FlatButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                        showDialog(
-                                                          barrierDismissible:
-                                                              false,
-                                                          context: context,
-                                                          builder:
-                                                              (_) =>
-                                                                  AlertDialog(
-                                                                    contentPadding:
-                                                                        EdgeInsets.fromLTRB(
-                                                                            16.0,
-                                                                            10.0,
-                                                                            16.0,
-                                                                            10.0),
-                                                                    content:
-                                                                        SingleChildScrollView(
-                                                                          child: Column(
-                                                                            children: <Widget>[
-                                                                              Container(
-                                                                                padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                                                                                child: Text('Izberi:', style: TextStyle(fontSize: 22.0),),
-                                                                              ),
-                                                                              Row(
-                                                                                mainAxisAlignment:
-                                                                                MainAxisAlignment
-                                                                                    .center,
-                                                                                crossAxisAlignment:
-                                                                                CrossAxisAlignment
-                                                                                    .center,
-                                                                                children: <
-                                                                                    Widget>[
-                                                                                  Container(
-                                                                                    padding: EdgeInsets.fromLTRB(
-                                                                                        16.0,
-                                                                                        10.0,
-                                                                                        10.0,
-                                                                                        10.0),
-                                                                                    child:
-                                                                                    IconButton(
-                                                                                      icon:
-                                                                                      Icon(
-                                                                                        Icons.add_a_photo,
-                                                                                        color: Colors.blue,
-                                                                                      ),
-                                                                                      onPressed:
-                                                                                          () {
-                                                                                        Navigator.pop(context);
-                                                                                        takePhoto(1, snapshot.data[index].id, snapshot.data[index].name);
-                                                                                      },
-                                                                                    ),
-                                                                                  ),
-                                                                                  Container(
-                                                                                    padding: EdgeInsets.fromLTRB(
-                                                                                        10.0,
-                                                                                        10.0,
-                                                                                        16.0,
-                                                                                        10.0),
-                                                                                    child:
-                                                                                    IconButton(
-                                                                                      icon:
-                                                                                      Icon(
-                                                                                        Icons.photo,
-                                                                                        color: Colors.blue,
-                                                                                      ),
-                                                                                      onPressed:
-                                                                                          () {
-                                                                                        Navigator.pop(context);
-                                                                                        takePhoto(2, snapshot.data[index].id, snapshot.data[index].name);
-                                                                                      },
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        )
-                                                                  ),
-                                                        );
-                                                      },
-                                                      child: Text(
-                                                        'SLIKO',
-                                                        style: TextStyle(
-                                                            fontSize: 16.0),
-                                                      ),
-                                                    ),
-                                                    FlatButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                        showDialog(
-                                                          barrierDismissible:
-                                                              false,
-                                                          context: context,
-                                                          builder:
-                                                              (_) =>
-                                                                  AlertDialog(
-                                                                    contentPadding:
-                                                                        EdgeInsets.fromLTRB(
-                                                                            16.0,
-                                                                            10.0,
-                                                                            16.0,
-                                                                            10.0),
-                                                                    content:
-                                                                        SingleChildScrollView(
-                                                                      child:
-                                                                          Form(
-                                                                        child:
-                                                                            TextFormField(
-                                                                          autofocus:
-                                                                              true,
-                                                                          decoration:
-                                                                              InputDecoration(
-                                                                            hintText:
-                                                                                snapshot.data[index].name,
-                                                                          ),
-                                                                          style: TextStyle(
-                                                                              fontSize: 22.0,
-                                                                              color: Colors.black),
-                                                                          controller:
-                                                                              updateController,
-                                                                          textCapitalization:
-                                                                              TextCapitalization.sentences,
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    actions: <
-                                                                        Widget>[
-                                                                      FlatButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          updateController.text =
-                                                                              '';
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        child: Text(
-                                                                            'PREKLIČI'),
-                                                                      ),
-                                                                      FlatButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          var dbHelper =
-                                                                              new StampDBHelper();
-                                                                          Stamp
-                                                                              stamp =
-                                                                              new Stamp();
-                                                                          stamp.id = snapshot
-                                                                              .data[index]
-                                                                              .id;
-                                                                          stamp.name = updateController.text != ''
-                                                                              ? updateController.text
-                                                                              : snapshot.data[index].name;
-                                                                          updateController.text =
-                                                                              '';
-                                                                          dbHelper
-                                                                              .updateStamp(stamp);
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                          setState(
-                                                                              () {
-                                                                            getStampsFromDB();
-                                                                          });
-                                                                        },
-                                                                        child: Text(
-                                                                            'POTRDI'),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                        );
-                                                      },
-                                                      child: Text(
-                                                        'NASLOV',
-                                                        style: TextStyle(
-                                                            fontSize: 16.0),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                            builder: (_) => MyAlert(
+                                              id: snapshot.data[index].id,
+                                              fun: 1,
+                                              hint: snapshot.data[index].name,
+                                              myPhoto: File(snapshot.data[index].img),
+                                            ),
                                           );
                                         },
                                         child: Icon(
@@ -302,11 +95,13 @@ class MyStampListState extends State<MyStampList> {
                                       padding: EdgeInsets.all(16.0),
                                       child: GestureDetector(
                                         onTap: () {
-                                          var dbHelper = new StampDBHelper();
-                                          dbHelper.deleteStamp(
-                                              snapshot.data[index]);
-                                          setState(() {
-                                            getStampsFromDB();
+                                          ConfirmationAlert().myAlert(context, 'Opozorilo', 'Ste prepričani, da želite izbrisati žig?', () {
+                                            var dbHelper = new StampDBHelper();
+                                            dbHelper.deleteStamp(snapshot.data[index]);
+                                            setState(() {
+                                              getStampsFromDB();
+                                            });
+                                            Navigator.pop(context);
                                           });
                                         },
                                         child: Icon(
@@ -326,9 +121,9 @@ class MyStampListState extends State<MyStampList> {
                     );
                   },
                 );
+              } else if (snapshot.data.length == 0) {
+                return Text('Ni podatkov');
               }
-            } else if (snapshot.data.length == 0) {
-              return Text('Ni podatkov');
             }
             return Container(
               alignment: AlignmentDirectional.center,
@@ -344,7 +139,7 @@ class MyStampListState extends State<MyStampList> {
           showDialog(
             barrierDismissible: false,
             context: context,
-            builder: (_) => MyAlert(),
+            builder: (_) => MyAlert(fun: 0,),
           );
         },
         child: Icon(
@@ -355,29 +150,14 @@ class MyStampListState extends State<MyStampList> {
       ),
     );
   }
-
-  takePhoto(int x, int index, String name) async {
-    Stamp stamp2 = Stamp();
-    stamp2.id = index;
-    stamp2.name = name;
-    StampDBHelper db = StampDBHelper();
-    var image = await ImagePicker.pickImage(
-        source: x == 1 ? ImageSource.camera : ImageSource.gallery);
-    Future<void> doThis() {
-      List<int> imageBytes = image.readAsBytesSync();
-      String base64 = Base64Codec().encode(imageBytes);
-      stamp2.img = base64;
-      db.updateStamp(stamp2);
-      return null;
-    }
-    await doThis();
-    setState(() {
-      getStampsFromDB();
-    });
-  }
 }
 
 class MyAlert extends StatefulWidget {
+  final int id;
+  final int fun; // 0 add, 1 update
+  final String hint;
+  final File myPhoto;
+  MyAlert({this.id, this.fun, this.hint, this.myPhoto});
   @override
   State<StatefulWidget> createState() {
     return MyAlertState();
@@ -388,7 +168,7 @@ class MyAlertState extends State<MyAlert> {
   final stampFormKey1 = new GlobalKey<FormState>();
   var stamp1 = new Stamp();
   File photo;
-  bool isOk = true;
+  bool isOk = true; //validator -> blue/red color of icons
 
   @override
   Widget build(BuildContext context) {
@@ -405,10 +185,11 @@ class MyAlertState extends State<MyAlert> {
                 style: TextStyle(fontSize: 22.0, color: Colors.black),
                 decoration: InputDecoration(
                   labelText: "Vnesite lokacijo",
+                  hintText: widget.hint,
                 ),
                 validator: (val) =>
-                    val.length == 0 ? "Lokacija ne sme biti prazna!" : null,
-                onSaved: (val) => stamp1.name = val,
+                    val.length == 0 && widget.hint == null ? "Lokacija ne sme biti prazna!" : null,
+                onSaved: (val) => widget.hint == null ? stamp1.name = val : val.length == 0 ? stamp1.name = widget.hint : stamp1.name = val,
                 autofocus: true,
               ),
             ),
@@ -460,8 +241,7 @@ class MyAlertState extends State<MyAlert> {
         ),
         FlatButton(
           onPressed: () {
-            if (this.stampFormKey1.currentState.validate() &&
-                this.stamp1.img != null) {
+            if (this.stampFormKey1.currentState.validate() && this.stamp1.img != null) {
               stampFormKey1.currentState.save();
               setState(() {
                 isOk = true;
@@ -475,11 +255,16 @@ class MyAlertState extends State<MyAlert> {
               return null;
             }
             var dbHelper = new StampDBHelper();
-            dbHelper.addNewStamp(stamp1);
-            Navigator.pop(context);
+            if (widget.fun == 0) {
+              dbHelper.addNewStamp(stamp1);
+            } else {
+              stamp1.id = widget.id;
+              dbHelper.updateStamp(stamp1);
+            }
             setState(() {
               getStampsFromDB();
             });
+            Navigator.pop(context);
           },
           child: Text(
             'POTRDI',
@@ -491,34 +276,50 @@ class MyAlertState extends State<MyAlert> {
   }
 
   takePhoto(int x) async {
-    var image = await ImagePicker.pickImage(
-        source: x == 1 ? ImageSource.camera : ImageSource.gallery);
-    Future<void> doThis() {
-      photo = image;
-      List<int> imageBytes = image.readAsBytesSync();
-      String base64 = Base64Codec().encode(imageBytes);
-      stamp1.img = base64;
-      return null;
-    }
+    var image = await ImagePicker.pickImage(source: x == 1 ? ImageSource.camera : ImageSource.gallery);
+    photo = image; //alert image preview
 
-    await doThis();
+    final String path = await _localPath;
+    final File newImage = await image.copy('$path/${DateTime.now().toUtc().toIso8601String()}.png');
+    stamp1.img = newImage.path;
+
     setState(() {
       getStampsFromDB();
       isOk = true;
     });
   }
 
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
   Widget showPhoto() {
-    return photo == null
-        ? Container(
-            height: 10.0,
-          )
-        : Container(
+    if (photo == null) {
+      if (widget.myPhoto != null) {
+        stamp1.img = widget.myPhoto.path;
+
+        return Container(
             padding: EdgeInsets.only(top: 12.0, bottom: 8.0),
             height: 200.0,
             child: Image.file(
-              photo,
+              widget.myPhoto,
             ),
-          );
+        );
+      } else {
+        return Container(
+          height: 10.0,
+        );
+      }
+    } else {
+      return Container(
+        padding: EdgeInsets.only(top: 12.0, bottom: 8.0),
+        height: 200.0,
+        child: Image.file(
+          photo,
+        ),
+      );
+    }
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mountain_companion/database/travel_db_helper.dart';
+import 'package:mountain_companion/helper/confirmation_alert.dart';
+import 'package:mountain_companion/helper/constants.dart';
 import 'package:mountain_companion/models/travel.dart';
 
 Future<List<Travel>> getTravelInfo() {
@@ -10,7 +12,8 @@ Future<List<Travel>> getTravelInfo() {
 
 class TravelDetails extends StatefulWidget {
   final int myInt;
-  TravelDetails({this.myInt});
+  final int travelID;
+  TravelDetails({this.myInt, this.travelID});
   @override
   State<StatefulWidget> createState() {
     return TravelDetailsState();
@@ -44,8 +47,18 @@ class TravelDetailsState extends State<TravelDetails> {
                       ),
                     ),
                     actions: <Widget>[
-                      IconButton(icon: Icon(Icons.share), onPressed: () {}),
-                      IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+                      PopupMenuButton(
+                        onSelected: pickAction,
+                        icon: Icon(Icons.more_vert),
+                        itemBuilder: (BuildContext ctx) {
+                          return Constants.details.map((String action) {
+                            return PopupMenuItem<String>(
+                              value: action,
+                              child: Text(action, style: TextStyle(fontSize: 20.0),),
+                            );
+                          }).toList();
+                        },
+                      ),
                     ],
                   ),
                   SliverList(
@@ -99,7 +112,7 @@ class TravelDetailsState extends State<TravelDetails> {
       child: Text(
         'Triglavska jezera',
         style: TextStyle(
-            fontSize: 30.0, color: Colors.black, fontWeight: FontWeight.bold),
+            fontSize: 30.0, color: Colors.blueGrey, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -117,7 +130,7 @@ class TravelDetailsState extends State<TravelDetails> {
               title,
               style: TextStyle(
                   fontSize: 18.0,
-                  color: Colors.grey,
+                  color: Colors.blueGrey,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -127,7 +140,7 @@ class TravelDetailsState extends State<TravelDetails> {
               text,
               style: TextStyle(
                 fontSize: 22.0,
-                color: Colors.black,
+                color: Colors.blueGrey,
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -150,7 +163,7 @@ class TravelDetailsState extends State<TravelDetails> {
               'Galerija:',
               style: TextStyle(
                   fontSize: 18.0,
-                  color: Colors.grey,
+                  color: Colors.blueGrey,
                   fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
             ),
@@ -178,5 +191,20 @@ class TravelDetailsState extends State<TravelDetails> {
         ],
       ),
     );
+  }
+
+  void pickAction(String action) {
+    if (action == Constants.edit) {
+
+    } else if (action == Constants.delete) {
+      ConfirmationAlert().myAlert(context, 'Opozorilo', 'Ste prepričani, da želite izbrisati izlet?', () {
+        Travel travel = new Travel();
+        travel.id = widget.travelID;
+        var dbHelper = new TravelDBHelper();
+        dbHelper.deleteTravel(travel);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      });
+    }
   }
 }
