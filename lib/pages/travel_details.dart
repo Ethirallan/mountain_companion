@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mountain_companion/database/travel_db_helper.dart';
 import 'package:mountain_companion/helper/confirmation_alert.dart';
@@ -41,8 +43,7 @@ class TravelDetailsState extends State<TravelDetails> {
                         snapshot.data[widget.myInt].title,
                         style: TextStyle(),
                       ),
-                      background: Image.network(
-                        'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg',
+                      background: Image.file(File(snapshot.data[widget.myInt].photo1), //add default img!
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -73,7 +74,14 @@ class TravelDetailsState extends State<TravelDetails> {
                               buildDataCard('Čas hoje:', snapshot.data[widget.myInt].time),
                               buildDataCard('Višinska razlika:', snapshot.data[widget.myInt].height),
                               buildDataCard('Zapiski:', snapshot.data[widget.myInt].notes),
-                              gallery(),
+                              gallery(
+                                snapshot.data[widget.myInt].photo1,
+                                snapshot.data[widget.myInt].photo2,
+                                snapshot.data[widget.myInt].photo3,
+                                snapshot.data[widget.myInt].photo4,
+                                snapshot.data[widget.myInt].photo5,
+                                snapshot.data[widget.myInt].photo6,
+                              ),
                             ],
                           ),
                         ),
@@ -91,28 +99,6 @@ class TravelDetailsState extends State<TravelDetails> {
             child: CircularProgressIndicator(),
           );
         },
-      ),
-    );
-  }
-
-  Widget buildHeader() {
-    return Container(
-      constraints: BoxConstraints.expand(
-        height: 200.0,
-      ),
-      alignment: Alignment.bottomLeft,
-      padding: EdgeInsets.only(left: 16.0, bottom: 8.0),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(
-              'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Text(
-        'Triglavska jezera',
-        style: TextStyle(
-            fontSize: 30.0, color: Colors.blueGrey, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -150,7 +136,7 @@ class TravelDetailsState extends State<TravelDetails> {
     );
   }
 
-  Widget gallery() {
+  Widget gallery(String photo1, photo2, photo3, photo4, photo5, photo6) {
     return Card(
       elevation: 4.0,
       child: Column(
@@ -173,18 +159,12 @@ class TravelDetailsState extends State<TravelDetails> {
             padding: EdgeInsets.all(8.0),
             child: PageView(
               children: <Widget>[
-                Image.network(
-                  'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg',
-                  fit: BoxFit.contain,
-                ),
-                Image.network(
-                  'https://www.kamnik.info/wp-content/uploads/2016/08/marija-snezna-2016-97-620x330.jpg',
-                  fit: BoxFit.contain,
-                ),
-                Image.network(
-                  'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg',
-                  fit: BoxFit.contain,
-                ),
+                showPhoto(photo1),
+                showPhoto(photo2),
+                showPhoto(photo3),
+                showPhoto(photo4),
+                showPhoto(photo5),
+                showPhoto(photo6),
               ],
             ),
           ),
@@ -205,6 +185,14 @@ class TravelDetailsState extends State<TravelDetails> {
         Navigator.pop(context);
         Navigator.pop(context);
       });
+    }
+  }
+
+  Widget showPhoto(String photo) {
+    if (photo == null) {
+      return Container();
+    } else {
+      return Image.file(File(photo), fit: BoxFit.contain,);
     }
   }
 }

@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mountain_companion/database/travel_db_helper.dart';
 import 'package:mountain_companion/models/travel.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AddNew extends StatefulWidget {
   @override
@@ -10,12 +14,19 @@ class AddNew extends StatefulWidget {
 }
 
 class AddNewState extends State<AddNew> {
+  Travel travel = new Travel();
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController dateController = new TextEditingController();
   final TextEditingController locationController = new TextEditingController();
   final TextEditingController timeController = new TextEditingController();
   final TextEditingController heightController = new TextEditingController();
   final TextEditingController notesController = new TextEditingController();
+  File miniPhoto1;
+  File miniPhoto2;
+  File miniPhoto3;
+  File miniPhoto4;
+  File miniPhoto5;
+  File miniPhoto6;
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +50,36 @@ class AddNewState extends State<AddNew> {
               child: Container(
                 height: 180.0,
                 child: Center(
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.add_a_photo,
-                        size: 34.0,
-                        color: Colors.blueGrey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(
+                          Icons.add_a_photo,
+                          size: 34.0,
+                          color: Colors.blueGrey,
+                        ),
+                        onPressed: () {
+                          takePhoto(1);
+                        }
                       ),
-                      onPressed: () {}),
+                      IconButton(
+                        icon: Icon(
+                          Icons.photo,
+                          size: 34.0,
+                          color: Colors.blueGrey,
+                        ),
+                        onPressed: () {
+                          takePhoto(0);
+                        }
+                      ),
+                    ],
+                  )
                 ),
               ),
             ),
+            showMiniPhotos(),
             Row(
               children: <Widget>[
                 buildButton('Prekliči', 0),
@@ -59,6 +90,49 @@ class AddNewState extends State<AddNew> {
         ),
       ),
     );
+  }
+
+  Widget showMiniPhotos() {
+    if (miniPhoto1 == null && miniPhoto2 == null && miniPhoto3 == null && miniPhoto4 == null && miniPhoto5 == null && miniPhoto6 == null) {
+      return Container();
+    } else {
+      return Card(
+        elevation: 4.0,
+        child: Container(
+          padding: EdgeInsets.all(10.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: miniPhoto1 != null ? Image.file(miniPhoto1, fit: BoxFit.contain,) : Container(),
+                  ),
+                  Expanded(
+                    child: miniPhoto2 != null ? Image.file(miniPhoto2, fit: BoxFit.contain,) : Container(),
+                  ),
+                  Expanded(
+                    child: miniPhoto3 != null ? Image.file(miniPhoto3, fit: BoxFit.contain,) : Container(),
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: miniPhoto4 != null ? Image.file(miniPhoto4, fit: BoxFit.contain,) : Container(),
+                  ),
+                  Expanded(
+                    child: miniPhoto5 != null ? Image.file(miniPhoto5, fit: BoxFit.contain,) : Container(),
+                  ),
+                  Expanded(
+                    child: miniPhoto6 != null ? Image.file(miniPhoto6, fit: BoxFit.contain,) : Container(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   Widget buildButton(String name, int fun) {
@@ -85,7 +159,6 @@ class AddNewState extends State<AddNew> {
   }
 
   void _saveToDB() {
-    Travel travel = new Travel();
     var dbHelper = new TravelDBHelper();
     travel.title = titleController.text;
     travel.date = dateController.text;
@@ -136,5 +209,43 @@ class AddNewState extends State<AddNew> {
     );
   }
 
+  takePhoto(int x) async {
+    var image = await ImagePicker.pickImage(source: x == 1 ? ImageSource.camera : ImageSource.gallery);
+    //File photo = image; //alert image preview
+
+    final String path = await _localPath;
+    final File newImage = await image.copy('$path/${DateTime.now().toUtc().toIso8601String()}.png');
+
+    if (travel.photo1 == null) {
+      travel.photo1 = newImage.path;
+      miniPhoto1 = image;
+    } else if (travel.photo2 == null) {
+      travel.photo2 = newImage.path;
+      miniPhoto2 = image;
+    } else if (travel.photo3 == null) {
+      travel.photo3 = newImage.path;
+      miniPhoto3 = image;
+    } else if (travel.photo4 == null) {
+      travel.photo4 = newImage.path;
+      miniPhoto4 = image;
+    } else if (travel.photo5 == null) {
+      travel.photo5 = newImage.path;
+      miniPhoto5 = image;
+    } else if (travel.photo6 == null) {
+      travel.photo6 = newImage.path;
+      miniPhoto6 = image;
+    } else {
+      //Toast
+    }
+
+    setState(() {
+      showMiniPhotos();
+    });
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mountain_companion/database/travel_db_helper.dart';
 import 'package:mountain_companion/helper/constants.dart';
@@ -88,8 +90,9 @@ class HistoryState extends State<History> {
                             ),
                             Container(
                               padding: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
-                              child: Image.network(
-                                  'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg'),
+                              child: Image.file(File(snapshot.data[index].photo1),
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ],
                         ),
