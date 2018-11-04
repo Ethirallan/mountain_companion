@@ -23,6 +23,7 @@ class TravelDetails extends StatefulWidget {
 }
 
 class TravelDetailsState extends State<TravelDetails> {
+  Travel travel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +33,7 @@ class TravelDetailsState extends State<TravelDetails> {
         builder: (context, snapshot) {
           if (snapshot.data != null) {
             if (snapshot.hasData) {
+              travel = snapshot.data[widget.myInt];
               return CustomScrollView(
                 slivers: <Widget>[
                   SliverAppBar(
@@ -40,10 +42,10 @@ class TravelDetailsState extends State<TravelDetails> {
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
                       title: Text(
-                        snapshot.data[widget.myInt].title,
+                        travel.title,
                         style: TextStyle(),
                       ),
-                      background: Image.file(File(snapshot.data[widget.myInt].photo1), //add default img!
+                      background: Image.file(File(travel.photo1), //add default img!
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -69,18 +71,18 @@ class TravelDetailsState extends State<TravelDetails> {
                           padding: EdgeInsets.all(8.0),
                           child: Column(
                             children: <Widget>[
-                              buildDataCard('Datum:', snapshot.data[widget.myInt].date),
-                              buildDataCard('Lokacija:', snapshot.data[widget.myInt].location),
-                              buildDataCard('Čas hoje:', snapshot.data[widget.myInt].time),
-                              buildDataCard('Višinska razlika:', snapshot.data[widget.myInt].height),
-                              buildDataCard('Zapiski:', snapshot.data[widget.myInt].notes),
+                              buildDataCard('Datum:', travel.date),
+                              buildDataCard('Lokacija:', travel.location),
+                              buildDataCard('Čas hoje:', travel.time),
+                              buildDataCard('Višinska razlika:', travel.height),
+                              buildDataCard('Zapiski:', travel.notes),
                               gallery(
-                                snapshot.data[widget.myInt].photo1,
-                                snapshot.data[widget.myInt].photo2,
-                                snapshot.data[widget.myInt].photo3,
-                                snapshot.data[widget.myInt].photo4,
-                                snapshot.data[widget.myInt].photo5,
-                                snapshot.data[widget.myInt].photo6,
+                                travel.photo1,
+                                travel.photo2,
+                                travel.photo3,
+                                travel.photo4,
+                                travel.photo5,
+                                travel.photo6,
                               ),
                             ],
                           ),
@@ -137,6 +139,16 @@ class TravelDetailsState extends State<TravelDetails> {
   }
 
   Widget gallery(String photo1, photo2, photo3, photo4, photo5, photo6) {
+    List<String> myList = [];
+    List<String> photoList = [photo1, photo2, photo3, photo4, photo5, photo6];
+    for (int i = 0; i < photoList.length; i ++) {
+      if (photoList[i].length > 8) { //!= null not working for some reason...
+        myList.add(photoList[i]);
+      }
+    }
+
+    print(myList);
+
     return Card(
       elevation: 4.0,
       child: Column(
@@ -155,21 +167,22 @@ class TravelDetailsState extends State<TravelDetails> {
             ),
           ),
           Container(
-            height: 200.0,
-            padding: EdgeInsets.all(8.0),
-            child: PageView(
-              children: <Widget>[
-                showPhoto(photo1),
-                showPhoto(photo2),
-                showPhoto(photo3),
-                showPhoto(photo4),
-                showPhoto(photo5),
-                showPhoto(photo6),
-              ],
-            ),
+            height: 360.0,
+            padding: EdgeInsets.all(14.0),
+            child: draw(myList),
           ),
         ],
       ),
+    );
+  }
+
+  Widget draw(List list) {
+    return PageView.builder(
+      itemCount: list.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        return showPhoto(list[index]);
+      },
     );
   }
 
@@ -192,7 +205,7 @@ class TravelDetailsState extends State<TravelDetails> {
     if (photo == null) {
       return Container();
     } else {
-      return Image.file(File(photo), fit: BoxFit.contain,);
+      return Image.file(File(photo), fit: BoxFit.scaleDown,);
     }
   }
 }

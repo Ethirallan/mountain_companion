@@ -17,6 +17,9 @@ Future<List<Travel>> getTravelsFromDB() async {
 }
 
 class History extends StatefulWidget {
+
+
+
   @override
   State<StatefulWidget> createState() {
     return HistoryState();
@@ -90,8 +93,14 @@ class HistoryState extends State<History> {
                             ),
                             Container(
                               padding: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
-                              child: Image.file(File(snapshot.data[index].photo1),
-                                fit: BoxFit.contain,
+                              child: SizedBox.expand(
+                                child: Image.file(File(snapshot.data[index].photo1),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              constraints: BoxConstraints(
+                                minHeight: 200.0,
+                                maxHeight: 300.0,
                               ),
                             ),
                           ],
