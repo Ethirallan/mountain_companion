@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mountain_companion/database/travel_db_helper.dart';
+import 'package:mountain_companion/helper/constants.dart';
 import 'dart:async';
 import 'package:mountain_companion/models/travel.dart';
 import 'package:mountain_companion/pages/wish_list.dart';
@@ -14,6 +17,9 @@ Future<List<Travel>> getTravelsFromDB() async {
 }
 
 class History extends StatefulWidget {
+
+
+
   @override
   State<StatefulWidget> createState() {
     return HistoryState();
@@ -25,6 +31,7 @@ class HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         title: Text(
           'Gorski spremljevalec',
@@ -32,40 +39,15 @@ class HistoryState extends State<History> {
         ),
         actions: <Widget>[
           PopupMenuButton(
+            onSelected: pickAction,
             icon: Icon(Icons.more_vert),
             itemBuilder: (BuildContext ctx) {
-              return <PopupMenuEntry>[
-                PopupMenuItem(
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyWishList()));
-                    },
-                    child: Text(
-                      'Seznam želja',
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ),
-                PopupMenuItem(
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyStampList()));
-                    },
-                    child: Text(
-                      'Zbirka žigov',
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ),
-              ];
+              return Constants.pages.map((String page) {
+                return PopupMenuItem<String>(
+                  value: page,
+                  child: Text(page, style: TextStyle(fontSize: 20.0),),
+                );
+              }).toList();
             },
           ),
         ],
@@ -94,7 +76,7 @@ class HistoryState extends State<History> {
                                 style: TextStyle(
                                   fontSize: 24.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Colors.blueGrey,
                                 ),
                               ),
                             ),
@@ -105,14 +87,21 @@ class HistoryState extends State<History> {
                                 style: TextStyle(
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.normal,
-                                  color: Colors.black,
+                                  color: Colors.blueGrey,
                                 ),
                               ),
                             ),
                             Container(
                               padding: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
-                              child: Image.network(
-                                  'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg'),
+                              child: SizedBox.expand(
+                                child: Image.file(File(snapshot.data[index].photo1),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              constraints: BoxConstraints(
+                                minHeight: 200.0,
+                                maxHeight: 300.0,
+                              ),
                             ),
                           ],
                         ),
@@ -120,15 +109,13 @@ class HistoryState extends State<History> {
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => TravelDetails())),
+                              builder: (context) => TravelDetails(myInt: index, travelID: snapshot.data[index].id))),
                     );
                   },
                 );
               } else if (snapshot.data.length == 0) {
                 return Text('Ni podatkov');
               }
-            } else {
-              TravelDBHelper().addOne();
             }
             return Container(
               alignment: AlignmentDirectional.center,
@@ -153,5 +140,13 @@ class HistoryState extends State<History> {
         backgroundColor: Colors.blue,
       ),
     );
+  }
+
+  void pickAction(String page) {
+    if (page == Constants.wishList) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MyWishList()));
+    } else if (page == Constants.stamps) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MyStampList()));
+    }
   }
 }

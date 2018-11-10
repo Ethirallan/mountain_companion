@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mountain_companion/database/travel_db_helper.dart';
+import 'package:mountain_companion/helper/confirmation_alert.dart';
+import 'package:mountain_companion/helper/constants.dart';
 import 'package:mountain_companion/models/travel.dart';
 
 Future<List<Travel>> getTravelInfo() {
@@ -9,6 +13,9 @@ Future<List<Travel>> getTravelInfo() {
 }
 
 class TravelDetails extends StatefulWidget {
+  final int myInt;
+  final int travelID;
+  TravelDetails({this.myInt, this.travelID});
   @override
   State<StatefulWidget> createState() {
     return TravelDetailsState();
@@ -16,14 +23,17 @@ class TravelDetails extends StatefulWidget {
 }
 
 class TravelDetailsState extends State<TravelDetails> {
+  Travel travel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
+      backgroundColor: Colors.blueGrey,
+      body: FutureBuilder<List<Travel>>(
         future: getTravelInfo(),
         builder: (context, snapshot) {
           if (snapshot.data != null) {
             if (snapshot.hasData) {
+              travel = snapshot.data[widget.myInt];
               return CustomScrollView(
                 slivers: <Widget>[
                   SliverAppBar(
@@ -32,17 +42,26 @@ class TravelDetailsState extends State<TravelDetails> {
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
                       title: Text(
-                        'Triglavska jezera',
+                        travel.title,
                         style: TextStyle(),
                       ),
-                      background: Image.network(
-                        'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg',
+                      background: Image.file(File(travel.photo1), //add default img!
                         fit: BoxFit.cover,
                       ),
                     ),
                     actions: <Widget>[
-                      IconButton(icon: Icon(Icons.share), onPressed: () {}),
-                      IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+                      PopupMenuButton(
+                        onSelected: pickAction,
+                        icon: Icon(Icons.more_vert),
+                        itemBuilder: (BuildContext ctx) {
+                          return Constants.details.map((String action) {
+                            return PopupMenuItem<String>(
+                              value: action,
+                              child: Text(action, style: TextStyle(fontSize: 20.0),),
+                            );
+                          }).toList();
+                        },
+                      ),
                     ],
                   ),
                   SliverList(
@@ -52,15 +71,19 @@ class TravelDetailsState extends State<TravelDetails> {
                           padding: EdgeInsets.all(8.0),
                           child: Column(
                             children: <Widget>[
-                              buildDataCard('Datum:', '13.8.2018'),
-                              buildDataCard('Lokacija:', 'Triglavski narodni park'),
-                              buildDataCard('Čas hoje:', '5h 30min'),
-                              buildDataCard('Višinska razlika:', '529m'),
-                              buildDataCard(
-                                  'Zapiski:',
-                                  'Bil je čudovit, sončen dan. Na pot smo se opravili že ob pol 5ih zjutraj'
-                                      'in imeli malico pri Koči ob 8:30. Domov smo prišli malce čez 4 uro popoldne.'),
-                              gallery(),
+                              buildDataCard('Datum:', travel.date),
+                              buildDataCard('Lokacija:', travel.location),
+                              buildDataCard('Čas hoje:', travel.time),
+                              buildDataCard('Višinska razlika:', travel.height),
+                              buildDataCard('Zapiski:', travel.notes),
+                              gallery(
+                                travel.photo1,
+                                travel.photo2,
+                                travel.photo3,
+                                travel.photo4,
+                                travel.photo5,
+                                travel.photo6,
+                              ),
                             ],
                           ),
                         ),
@@ -82,28 +105,6 @@ class TravelDetailsState extends State<TravelDetails> {
     );
   }
 
-  Widget buildHeader() {
-    return Container(
-      constraints: BoxConstraints.expand(
-        height: 200.0,
-      ),
-      alignment: Alignment.bottomLeft,
-      padding: EdgeInsets.only(left: 16.0, bottom: 8.0),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(
-              'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Text(
-        'Triglavska jezera',
-        style: TextStyle(
-            fontSize: 30.0, color: Colors.black, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
   Widget buildDataCard(String title, String text) {
     return Card(
       elevation: 4.0,
@@ -117,7 +118,7 @@ class TravelDetailsState extends State<TravelDetails> {
               title,
               style: TextStyle(
                   fontSize: 18.0,
-                  color: Colors.grey,
+                  color: Colors.blueGrey,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -127,7 +128,7 @@ class TravelDetailsState extends State<TravelDetails> {
               text,
               style: TextStyle(
                 fontSize: 22.0,
-                color: Colors.black,
+                color: Colors.blueGrey,
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -137,7 +138,17 @@ class TravelDetailsState extends State<TravelDetails> {
     );
   }
 
-  Widget gallery() {
+  Widget gallery(String photo1, photo2, photo3, photo4, photo5, photo6) {
+    List<String> myList = [];
+    List<String> photoList = [photo1, photo2, photo3, photo4, photo5, photo6];
+    for (int i = 0; i < photoList.length; i ++) {
+      if (photoList[i].length > 8) { //!= null not working for some reason...
+        myList.add(photoList[i]);
+      }
+    }
+
+    print(myList);
+
     return Card(
       elevation: 4.0,
       child: Column(
@@ -150,33 +161,51 @@ class TravelDetailsState extends State<TravelDetails> {
               'Galerija:',
               style: TextStyle(
                   fontSize: 18.0,
-                  color: Colors.grey,
+                  color: Colors.blueGrey,
                   fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
             ),
           ),
           Container(
-            height: 200.0,
-            padding: EdgeInsets.all(8.0),
-            child: PageView(
-              children: <Widget>[
-                Image.network(
-                  'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg',
-                  fit: BoxFit.contain,
-                ),
-                Image.network(
-                  'https://www.kamnik.info/wp-content/uploads/2016/08/marija-snezna-2016-97-620x330.jpg',
-                  fit: BoxFit.contain,
-                ),
-                Image.network(
-                  'http://www.lepote-slovenije.si/wp-content/uploads/2018/05/triglavska-jezera-750x445.jpg',
-                  fit: BoxFit.contain,
-                ),
-              ],
-            ),
+            height: 360.0,
+            padding: EdgeInsets.all(14.0),
+            child: draw(myList),
           ),
         ],
       ),
     );
+  }
+
+  Widget draw(List list) {
+    return PageView.builder(
+      itemCount: list.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        return showPhoto(list[index]);
+      },
+    );
+  }
+
+  void pickAction(String action) {
+    if (action == Constants.edit) {
+
+    } else if (action == Constants.delete) {
+      ConfirmationAlert().myAlert(context, 'Opozorilo', 'Ste prepričani, da želite izbrisati izlet?', () {
+        Travel travel = new Travel();
+        travel.id = widget.travelID;
+        var dbHelper = new TravelDBHelper();
+        dbHelper.deleteTravel(travel);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      });
+    }
+  }
+
+  Widget showPhoto(String photo) {
+    if (photo == null) {
+      return Container();
+    } else {
+      return Image.file(File(photo), fit: BoxFit.scaleDown,);
+    }
   }
 }
