@@ -265,9 +265,6 @@ class MyAlertState extends State<MyAlert> {
               getStampsFromDB();
             });
             Navigator.pop(context);
-            setState(() {
-              getStampsFromDB();
-            });
           },
           child: Text(
             'POTRDI',
