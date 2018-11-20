@@ -31,13 +31,20 @@ class NewExpandedState extends State<NewExpanded> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Container(
-            child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: widgetList.length,
-              itemBuilder: (context, index) {
-                return widgetList[index];
-              },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: widgetList.length,
+                  itemBuilder: (context, index) {
+                    return widgetList[index];
+                  },
+                ),
+                myAddBtn(),
+              ],
             ),
           ),
           //items.length <= 6 ? myAddBtn : Container()
@@ -47,11 +54,20 @@ class NewExpandedState extends State<NewExpanded> {
   }
 
   void addNewInput() {
-    /*
-    setState(() {
-      items.add();
-    })
-    */
+    if (widgetList.length < 7) {
+      int no = widgetList.length;
+      setState(() {
+        widgetList.add(Divider(height: 2.0, color: Colors.blueGrey,));
+        widgetList.add(myInputTitle('Čas $no:'));
+        widgetList.add(myInputField('Vnesite čas', timeCtrl, TextInputType.datetime));
+        widgetList.add(myInputTitle('Lokacija $no:'));
+        widgetList.add(myInputField('Vnesite lokacijo', locationCtrl, TextInputType.text));
+        widgetList.add(myInputTitle('Višina $no:'));
+        widgetList.add(myInputField('Vnesite nadmorsko višino', heightCtrl, TextInputType.number));
+      });
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Maksimalmo število ciljev že doseženo')));
+    }
   }
 
   Widget myAddBtn() {
