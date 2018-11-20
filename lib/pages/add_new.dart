@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mountain_companion/database/travel_db_helper.dart';
 import 'package:mountain_companion/models/travel.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:mountain_companion/helper/new_expanded.dart';
 
 class AddNew extends StatefulWidget {
   @override
@@ -41,9 +42,10 @@ class AddNewState extends State<AddNew> {
           children: <Widget>[
             buildCard('Naslov:', 'Vnesite naslov', titleController, TextInputType.text),
             buildCard('Datum:', 'Vnesite datum', dateController, TextInputType.datetime),
-            buildCard('Lokacija:', 'Vnesite lokacijo', locationController, TextInputType.text),
-            buildCard('Čas:', 'Vnesite čas', timeController, TextInputType.datetime),
-            buildCard('Višinska razlika:', 'Vnesite višinsko razliko', heightController, TextInputType.number),
+            //buildCard('Lokacija:', 'Vnesite lokacijo', locationController, TextInputType.text),
+            //buildCard('Čas:', 'Vnesite čas', timeController, TextInputType.datetime),
+            //buildCard('Višinska razlika:', 'Vnesite višinsko razliko', heightController, TextInputType.number),
+            NewExpanded(),
             buildCard('Zapiski', 'Vnesite zapiske', notesController, TextInputType.multiline),
             Card(
               elevation: 4.0,

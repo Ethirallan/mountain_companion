@@ -261,6 +261,9 @@ class MyAlertState extends State<MyAlert> {
               stamp1.id = widget.id;
               dbHelper.updateStamp(stamp1);
             }
+            setState(() {
+              getStampsFromDB();
+            });
             Navigator.pop(context);
             setState(() {
               getStampsFromDB();
