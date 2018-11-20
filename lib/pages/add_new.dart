@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mountain_companion/database/travel_db_helper.dart';
@@ -42,46 +41,9 @@ class AddNewState extends State<AddNew> {
           children: <Widget>[
             buildCard('Naslov:', 'Vnesite naslov', titleController, TextInputType.text),
             buildCard('Datum:', 'Vnesite datum', dateController, TextInputType.datetime),
-            //buildCard('Lokacija:', 'Vnesite lokacijo', locationController, TextInputType.text),
-            //buildCard('Čas:', 'Vnesite čas', timeController, TextInputType.datetime),
-            //buildCard('Višinska razlika:', 'Vnesite višinsko razliko', heightController, TextInputType.number),
             NewExpanded(),
             buildCard('Zapiski', 'Vnesite zapiske', notesController, TextInputType.multiline),
-            Card(
-              elevation: 4.0,
-              child: Container(
-                height: 180.0,
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(
-                          Icons.add_a_photo,
-                          size: 34.0,
-                          color: Colors.blueGrey,
-                        ),
-                        onPressed: () {
-                          takePhoto(1);
-                        }
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.photo,
-                          size: 34.0,
-                          color: Colors.blueGrey,
-                        ),
-                        onPressed: () {
-                          takePhoto(0);
-                        }
-                      ),
-                    ],
-                  )
-                ),
-              ),
-            ),
-            showMiniPhotos(),
+            galleryCard(),
             Row(
               children: <Widget>[
                 buildButton('Prekliči', 0),
@@ -94,47 +56,88 @@ class AddNewState extends State<AddNew> {
     );
   }
 
-  Widget showMiniPhotos() {
-    if (miniPhoto1 == null && miniPhoto2 == null && miniPhoto3 == null && miniPhoto4 == null && miniPhoto5 == null && miniPhoto6 == null) {
-      return Container();
-    } else {
-      return Card(
-        elevation: 4.0,
-        child: Container(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            children: <Widget>[
-              Row(
+  Widget galleryCard() {
+    return Card(
+      elevation: 4.0,
+      child: Container(
+        padding: EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Expanded(
-                    child: miniPhoto1 != null ? Image.file(miniPhoto1, fit: BoxFit.contain,) : Container(),
+                  IconButton(
+                      icon: Icon(
+                        Icons.add_a_photo,
+                        size: 34.0,
+                        color: Colors.blue,
+                      ),
+                      onPressed: () {
+                        takePhoto(1);
+                      }
                   ),
-                  Expanded(
-                    child: miniPhoto2 != null ? Image.file(miniPhoto2, fit: BoxFit.contain,) : Container(),
-                  ),
-                  Expanded(
-                    child: miniPhoto3 != null ? Image.file(miniPhoto3, fit: BoxFit.contain,) : Container(),
+                  IconButton(
+                      icon: Icon(
+                        Icons.photo,
+                        size: 34.0,
+                        color: Colors.blue,
+                      ),
+                      onPressed: () {
+                        takePhoto(0);
+                      }
                   ),
                 ],
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: miniPhoto4 != null ? Image.file(miniPhoto4, fit: BoxFit.contain,) : Container(),
-                  ),
-                  Expanded(
-                    child: miniPhoto5 != null ? Image.file(miniPhoto5, fit: BoxFit.contain,) : Container(),
-                  ),
-                  Expanded(
-                    child: miniPhoto6 != null ? Image.file(miniPhoto6, fit: BoxFit.contain,) : Container(),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: miniPhoto1 != null ? Container(padding: EdgeInsets.all(4.0), child: GestureDetector(onDoubleTap: () {
+                    miniPhoto1 = null;
+                    travel.photo1 = null;
+                    setState(() {
+                      galleryCard();
+                    });
+                  }, child: Image.file(miniPhoto1, fit: BoxFit.contain,))) : Container(),
+                ),
+                Expanded(
+                  child: miniPhoto2 != null ? Container(padding: EdgeInsets.all(4.0), child: GestureDetector(onDoubleTap: () { miniPhoto2 = null; travel.photo2 = null; setState(() {
+                    galleryCard();
+                  });}, child: Image.file(miniPhoto2, fit: BoxFit.contain,))) : Container(),
+                ),
+                Expanded(
+                  child: miniPhoto3 != null ? Container(padding: EdgeInsets.all(4.0), child: GestureDetector(onDoubleTap: () { miniPhoto3 = null; travel.photo3 = null; setState(() {
+                    galleryCard();
+                  });}, child: Image.file(miniPhoto3, fit: BoxFit.contain,))) : Container(),
+                ),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: miniPhoto4 != null ? Container(padding: EdgeInsets.all(4.0), child: GestureDetector(onDoubleTap: () { miniPhoto4 = null; travel.photo4 = null; setState(() {
+                    galleryCard();
+                  });}, child: Image.file(miniPhoto4, fit: BoxFit.contain,))) : Container(),
+                ),
+                Expanded(
+                  child: miniPhoto5 != null ? Container(padding: EdgeInsets.all(4.0), child: GestureDetector(onDoubleTap: () { miniPhoto5 = null; travel.photo5 = null; setState(() {
+                    galleryCard();
+                  });}, child: Image.file(miniPhoto5, fit: BoxFit.contain,))) : Container(),
+                ),
+                Expanded(
+                  child: miniPhoto6 != null ? Container(padding: EdgeInsets.all(4.0), child: GestureDetector(onDoubleTap: () { miniPhoto6 = null; travel.photo6 = null; setState(() {
+                    galleryCard();
+                  });}, child: Image.file(miniPhoto6, fit: BoxFit.contain,))) : Container(),
+                ),
+              ],
+            ),
+          ],
         ),
-      );
-    }
+      ),
+    );
   }
 
   Widget buildButton(String name, int fun) {
@@ -146,7 +149,7 @@ class AddNewState extends State<AddNew> {
           child: Text(
             name,
             style: TextStyle(
-              color: Colors.blueGrey,
+              color: Colors.blue,
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
             ),
@@ -237,11 +240,11 @@ class AddNewState extends State<AddNew> {
       travel.photo6 = newImage.path;
       miniPhoto6 = image;
     } else {
-      //Toast
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Maksimalno število slik izbrano')));
     }
 
     setState(() {
-      showMiniPhotos();
+      galleryCard();
     });
   }
 

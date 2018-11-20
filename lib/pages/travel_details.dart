@@ -146,9 +146,6 @@ class TravelDetailsState extends State<TravelDetails> {
         myList.add(photoList[i]);
       }
     }
-
-    print(myList);
-
     return Card(
       elevation: 4.0,
       child: Column(
