@@ -41,7 +41,7 @@ class AddNewState extends State<AddNew> {
           children: <Widget>[
             buildCard('Naslov:', 'Vnesite naslov', titleController, TextInputType.text),
             buildCard('Datum:', 'Vnesite datum', dateController, TextInputType.datetime),
-            NewExpanded(),
+            NewExpanded(heightCtrl: heightController, timeCtrl: timeController, locationCtrl: locationController,),
             buildCard('Zapiski', 'Vnesite zapiske', notesController, TextInputType.multiline),
             galleryCard(),
             Row(

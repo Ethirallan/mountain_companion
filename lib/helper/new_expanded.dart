@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class NewExpanded extends StatefulWidget {
+  NewExpanded({this.locationCtrl, this.timeCtrl, this.heightCtrl});
+  final TextEditingController timeCtrl;
+  final TextEditingController locationCtrl;
+  final TextEditingController heightCtrl;
   @override
   State<StatefulWidget> createState() {
     return NewExpandedState();
@@ -8,21 +12,17 @@ class NewExpanded extends StatefulWidget {
 }
 
 class NewExpandedState extends State<NewExpanded> {
-  static TextEditingController timeCtrl = new TextEditingController();
-  static TextEditingController locationCtrl = new TextEditingController();
-  static TextEditingController heightCtrl = new TextEditingController();
-
   var widgetList = [];
 
   @override
   Widget build(BuildContext context) {
     if (widgetList.length == 0) {
       widgetList.add(myInputTitle('Čas izleta:'));
-      widgetList.add(myInputField('Vnesite čas', timeCtrl, TextInputType.datetime));
+      widgetList.add(myInputField('Vnesite čas', widget.timeCtrl, TextInputType.datetime));
       widgetList.add(myInputTitle('Lokacija izleta:'));
-      widgetList.add(myInputField('Vnesite lokacijo', locationCtrl, TextInputType.text));
+      widgetList.add(myInputField('Vnesite lokacijo', widget.locationCtrl, TextInputType.text));
       widgetList.add(myInputTitle('Višinska razlika:'));
-      widgetList.add(myInputField('Vnesite nadmorsko višino', heightCtrl, TextInputType.number));
+      widgetList.add(myInputField('Vnesite nadmorsko višino', widget.heightCtrl, TextInputType.number));
     }
     return Card(
       elevation: 4.0,
@@ -54,6 +54,7 @@ class NewExpandedState extends State<NewExpanded> {
   }
 
   void addNewInput() {
+    var deleteThis = new TextEditingController();
     if (widgetList.length < 11) {
       int no = widgetList.length - 5;
       setState(() {
@@ -66,12 +67,12 @@ class NewExpandedState extends State<NewExpanded> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 myInputTitle('Ura $no:'),
-                myInputField('Vnesite uro', timeCtrl, TextInputType.datetime),
+                myInputField('Vnesite uro', deleteThis, TextInputType.datetime),
                 myInputTitle('Lokacija $no:'),
                 myInputField(
-                    'Vnesite lokacijo', locationCtrl, TextInputType.text),
+                    'Vnesite lokacijo', deleteThis, TextInputType.text),
                 myInputTitle('Višina $no:'),
-                myInputField('Vnesite nadmorsko višino', heightCtrl,
+                myInputField('Vnesite nadmorsko višino', deleteThis,
                     TextInputType.number),
               ],
             ),
