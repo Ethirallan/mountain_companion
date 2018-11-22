@@ -81,9 +81,9 @@ class TravelDetailsState extends State<TravelDetails> {
                           child: Column(
                             children: <Widget>[
                               buildDataCard('Datum:', travel.date),
-                              buildDataCard('Lokacija:', travel.location),
-                              buildDataCard('Čas hoje:', travel.time),
-                              buildDataCard('Višinska razlika:', travel.height),
+                              buildDataCard('Lokacija:', travel.location2),
+                              buildDataCard('Čas hoje:', travel.time1),
+                              buildDataCard('Višinska razlika:', travel.height1),
                               buildDataCard('Zapiski:', travel.notes),
                               gallery(imgFileList),
                             ],
@@ -103,6 +103,33 @@ class TravelDetailsState extends State<TravelDetails> {
             child: CircularProgressIndicator(),
           );
         },
+      ),
+    );
+  }
+
+  Widget myExpansionTile(String title, String value) {
+    return Card(
+      elevation: 4.0,
+      child: ExpansionTile(
+        title: Text(title, style: TextStyle(
+            fontSize: 18.0,
+            color: Colors.blueGrey,
+            fontWeight: FontWeight.bold),
+        ),
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Text(value),
+          ),
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Text(value),
+          ),Container(
+            padding: EdgeInsets.all(8.0),
+            child: Text(value),
+          ),
+
+        ],
       ),
     );
   }

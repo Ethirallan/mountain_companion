@@ -5,6 +5,7 @@ import 'package:mountain_companion/database/travel_db_helper.dart';
 import 'package:mountain_companion/models/travel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:mountain_companion/helper/new_expanded.dart';
+import 'dart:math';
 
 class AddNew extends StatefulWidget {
   @override
@@ -17,9 +18,6 @@ class AddNewState extends State<AddNew> {
   Travel travel = new Travel();
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController dateController = new TextEditingController();
-  final TextEditingController locationController = new TextEditingController();
-  final TextEditingController timeController = new TextEditingController();
-  final TextEditingController heightController = new TextEditingController();
   final TextEditingController notesController = new TextEditingController();
   File miniPhoto1;
   File miniPhoto2;
@@ -41,7 +39,7 @@ class AddNewState extends State<AddNew> {
           children: <Widget>[
             buildCard('Naslov:', 'Vnesite naslov', titleController, TextInputType.text),
             buildCard('Datum:', 'Vnesite datum', dateController, TextInputType.datetime),
-            NewExpanded(heightCtrl: heightController, timeCtrl: timeController, locationCtrl: locationController,),
+            NewExpanded(),
             buildCard('Zapiski', 'Vnesite zapiske', notesController, TextInputType.multiline),
             galleryCard(),
             Row(
@@ -167,10 +165,32 @@ class AddNewState extends State<AddNew> {
     var dbHelper = new TravelDBHelper();
     travel.title = titleController.text;
     travel.date = dateController.text;
-    travel.location = locationController.text;
-    travel.time = timeController.text;
-    travel.height = heightController.text;
     travel.notes = notesController.text;
+    travel.location1 = NewExpandedState().location1Ctrl.text;
+    travel.location2 = NewExpandedState().location2Ctrl.text;
+    travel.location3 = NewExpandedState().location3Ctrl.text;
+    travel.location4 = NewExpandedState().location4Ctrl.text;
+    travel.location5 = NewExpandedState().location5Ctrl.text;
+    travel.location6 = NewExpandedState().location6Ctrl.text;
+    travel.time1 = NewExpandedState().time1Ctrl.text;
+    travel.time2 = NewExpandedState().time2Ctrl.text;
+    travel.time3 = NewExpandedState().time3Ctrl.text;
+    travel.time4 = NewExpandedState().time4Ctrl.text;
+    travel.time5 = NewExpandedState().time5Ctrl.text;
+    travel.time6 = NewExpandedState().time6Ctrl.text;
+    travel.height1 = NewExpandedState().height1Ctrl.text;
+    travel.height2 = NewExpandedState().height2Ctrl.text;
+    travel.height3 = NewExpandedState().height3Ctrl.text;
+    travel.height4 = NewExpandedState().height4Ctrl.text;
+    travel.height5 = NewExpandedState().height5Ctrl.text;
+    travel.height6 = NewExpandedState().height6Ctrl.text;
+    travel.finalLocation = travel.location1;
+    int res = int.tryParse(travel.time6) - int.tryParse(travel.time1);
+    //travel.finalTime = res.toString();
+    //int minHeight = [int.parse(travel.height1), int.parse(travel.height2), int.parse(travel.height3), int.parse(travel.height4), int.parse(travel.height5), int.parse(travel.height6)].reduce(min);
+    //int maxHeight = [int.parse(travel.height1), int.parse(travel.height2), int.parse(travel.height3), int.parse(travel.height4), int.parse(travel.height5), int.parse(travel.height6)].reduce(max);
+    //travel.finalHeight = (maxHeight - minHeight).toString();
+    print(res.toString() + "jadfsk");
     dbHelper.addNewTravel(travel);
     Navigator.pop(context);
   }
