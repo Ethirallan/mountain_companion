@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
 class NewExpanded extends StatefulWidget {
+  NewExpanded({this.finalLocationCtrl, this.finalTimeCtrl, this.finalHeightCtrl, this.location1Ctrl, this.location2Ctrl,
+  this.location3Ctrl, this.location4Ctrl, this.location5Ctrl, this.location6Ctrl, this.time1Ctrl, this.time2Ctrl,
+  this.time3Ctrl, this.time4Ctrl, this.time5Ctrl, this.time6Ctrl, this.height1Ctrl, this.height2Ctrl, this.height3Ctrl,
+  this.height4Ctrl, this.height5Ctrl, this.height6Ctrl});
+  final TextEditingController finalLocationCtrl, finalTimeCtrl, finalHeightCtrl;
+  final TextEditingController location1Ctrl, location2Ctrl, location3Ctrl, location4Ctrl, location5Ctrl, location6Ctrl;
+  final TextEditingController time1Ctrl, time2Ctrl, time3Ctrl, time4Ctrl, time5Ctrl, time6Ctrl;
+  final TextEditingController height1Ctrl, height2Ctrl, height3Ctrl, height4Ctrl, height5Ctrl, height6Ctrl;
   @override
   State<StatefulWidget> createState() {
     return NewExpandedState();
@@ -8,27 +16,6 @@ class NewExpanded extends StatefulWidget {
 }
 
 class NewExpandedState extends State<NewExpanded> {
-  TextEditingController finalLocationCtrl = new TextEditingController();
-  TextEditingController finalTimeCtrl = new TextEditingController();
-  TextEditingController finalHeightCtrl = new TextEditingController();
-  TextEditingController location1Ctrl = new TextEditingController();
-  TextEditingController location2Ctrl = new TextEditingController();
-  TextEditingController location3Ctrl = new TextEditingController();
-  TextEditingController location4Ctrl = new TextEditingController();
-  TextEditingController location5Ctrl = new TextEditingController();
-  TextEditingController location6Ctrl = new TextEditingController();
-  TextEditingController time1Ctrl = new TextEditingController();
-  TextEditingController time2Ctrl = new TextEditingController();
-  TextEditingController time3Ctrl = new TextEditingController();
-  TextEditingController time4Ctrl = new TextEditingController();
-  TextEditingController time5Ctrl = new TextEditingController();
-  TextEditingController time6Ctrl = new TextEditingController();
-  TextEditingController height1Ctrl = new TextEditingController();
-  TextEditingController height2Ctrl = new TextEditingController();
-  TextEditingController height3Ctrl = new TextEditingController();
-  TextEditingController height4Ctrl = new TextEditingController();
-  TextEditingController height5Ctrl = new TextEditingController();
-  TextEditingController height6Ctrl = new TextEditingController();
   List<Widget> widgetList = [];
 
   @override
@@ -124,13 +111,13 @@ class NewExpandedState extends State<NewExpanded> {
               if (fun == 1) {
                 int size = widgetList.length;
                 if (size == 0) {
-                  addNewInput(location2Ctrl, time2Ctrl, height2Ctrl);
+                  addNewInput(widget.location2Ctrl, widget.time2Ctrl, widget.height2Ctrl);
                 } else if (size == 1) {
-                  addNewInput(location3Ctrl, time3Ctrl, height3Ctrl);
+                  addNewInput(widget.location3Ctrl, widget.time3Ctrl, widget.height3Ctrl);
                 } else if (size == 2) {
-                  addNewInput(location4Ctrl, time4Ctrl, height4Ctrl);
+                  addNewInput(widget.location4Ctrl, widget.time4Ctrl, widget.height4Ctrl);
                 } else if (size == 3) {
-                  addNewInput(location5Ctrl, time5Ctrl, height5Ctrl);
+                  addNewInput(widget.location5Ctrl, widget.time5Ctrl, widget.height5Ctrl);
                 } else {
                   setState(() {
 
@@ -212,11 +199,11 @@ class NewExpandedState extends State<NewExpanded> {
                   child: Text('Začetek izleta:', style: TextStyle(fontSize: 20.0, color: Colors.blue, fontWeight: FontWeight.bold), textAlign: TextAlign.left,),
                 ),
                 myInputTitle('Ura starta:'),
-                myInputField('Vnesite čas', time1Ctrl, TextInputType.datetime),
+                myInputField('Vnesite čas', widget.time1Ctrl, TextInputType.datetime),
                 myInputTitle('Lokacija starta:'),
-                myInputField('Vnesite lokacijo', location1Ctrl, TextInputType.text),
+                myInputField('Vnesite lokacijo', widget.location1Ctrl, TextInputType.text),
                 myInputTitle('Višina starta:'),
-                myInputField('Vnesite nadmorsko višino', height1Ctrl, TextInputType.number),
+                myInputField('Vnesite nadmorsko višino', widget.height1Ctrl, TextInputType.number),
               ],
             ),
           ),
@@ -239,11 +226,11 @@ class NewExpandedState extends State<NewExpanded> {
               child: Text('Konec izleta:', style: TextStyle(fontSize: 20.0, color: Colors.blue, fontWeight: FontWeight.bold), textAlign: TextAlign.left,),
             ),
             myInputTitle('Ura konca:'),
-            myInputField('Vnesite čas', time6Ctrl, TextInputType.datetime),
+            myInputField('Vnesite čas', widget.time6Ctrl, TextInputType.datetime),
             myInputTitle('Lokacija konca:'),
-            myInputField('Vnesite lokacijo', location6Ctrl, TextInputType.text),
+            myInputField('Vnesite lokacijo', widget.location6Ctrl, TextInputType.text),
             myInputTitle('Višina konca:'),
-            myInputField('Vnesite nadmorsko višino', height6Ctrl, TextInputType.number),
+            myInputField('Vnesite nadmorsko višino', widget.height6Ctrl, TextInputType.number),
           ],
         ),
       ),

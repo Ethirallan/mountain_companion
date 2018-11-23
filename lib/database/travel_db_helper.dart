@@ -93,8 +93,8 @@ class TravelDBHelper {
 
   void updateTravel(Travel travel) async {
     var dbConnection = await db;
-    String query = 'UPDATE $tableName SET title=\'${travel.title}\', date=\'${travel.date}\', finalTime=\'${travel.finalTime}\','
-        'finalLocation=\'${travel.finalLocation}\', finalHeight=\'${travel.finalHeight}\', notes=\'${travel.notes}\', photo1=\'${travel.photo1}\', photo2=\'${travel.photo2}\','
+    String query = 'UPDATE $tableName SET title=\'${travel.title}\', date=\'${travel.date}\', finalLocation=\'${travel.finalLocation}\',  finalTime=\'${travel.finalTime}\','
+        'finalHeight=\'${travel.finalHeight}\', notes=\'${travel.notes}\', photo1=\'${travel.photo1}\', photo2=\'${travel.photo2}\','
         'photo3=\'${travel.photo3}\', photo4=\'${travel.photo4}\', photo5=\'${travel.photo5}\', photo6=\'${travel.photo6}\','
         'location1=\'${travel.location1}\', location2=\'${travel.location2}\', location3=\'${travel.location3}\', location4=\'${travel.location4}\', location5=\'${travel.location5}\', location6=\'${travel.location6}\','
         'time1=\'${travel.time1}\', time2=\'${travel.time2}\', time3=\'${travel.time3}\', time4=\'${travel.time4}\', time5=\'${travel.time5}\', time6=\'${travel.time6}\','

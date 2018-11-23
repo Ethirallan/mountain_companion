@@ -25,6 +25,27 @@ class AddNewState extends State<AddNew> {
   File miniPhoto4;
   File miniPhoto5;
   File miniPhoto6;
+  TextEditingController finalLocationCtrl = new TextEditingController();
+  TextEditingController finalTimeCtrl = new TextEditingController();
+  TextEditingController finalHeightCtrl = new TextEditingController();
+  TextEditingController location1Ctrl = new TextEditingController();
+  TextEditingController location2Ctrl = new TextEditingController();
+  TextEditingController location3Ctrl = new TextEditingController();
+  TextEditingController location4Ctrl = new TextEditingController();
+  TextEditingController location5Ctrl = new TextEditingController();
+  TextEditingController location6Ctrl = new TextEditingController();
+  TextEditingController time1Ctrl = new TextEditingController();
+  TextEditingController time2Ctrl = new TextEditingController();
+  TextEditingController time3Ctrl = new TextEditingController();
+  TextEditingController time4Ctrl = new TextEditingController();
+  TextEditingController time5Ctrl = new TextEditingController();
+  TextEditingController time6Ctrl = new TextEditingController();
+  TextEditingController height1Ctrl = new TextEditingController();
+  TextEditingController height2Ctrl = new TextEditingController();
+  TextEditingController height3Ctrl = new TextEditingController();
+  TextEditingController height4Ctrl = new TextEditingController();
+  TextEditingController height5Ctrl = new TextEditingController();
+  TextEditingController height6Ctrl = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +60,9 @@ class AddNewState extends State<AddNew> {
           children: <Widget>[
             buildCard('Naslov:', 'Vnesite naslov', titleController, TextInputType.text),
             buildCard('Datum:', 'Vnesite datum', dateController, TextInputType.datetime),
-            NewExpanded(),
+            NewExpanded(finalLocationCtrl: finalLocationCtrl, finalTimeCtrl: finalTimeCtrl, finalHeightCtrl: finalHeightCtrl, location1Ctrl: location1Ctrl, location2Ctrl: location2Ctrl, location3Ctrl: location3Ctrl, location4Ctrl: location4Ctrl,
+            location5Ctrl: location5Ctrl, location6Ctrl: location6Ctrl, time1Ctrl: time1Ctrl, time2Ctrl: time2Ctrl, time3Ctrl: time3Ctrl, time4Ctrl: time4Ctrl, time5Ctrl: time5Ctrl, time6Ctrl: time6Ctrl, height1Ctrl: height1Ctrl, height2Ctrl: height2Ctrl,
+            height3Ctrl: height3Ctrl, height4Ctrl: height4Ctrl, height5Ctrl: height5Ctrl, height6Ctrl: height6Ctrl),
             buildCard('Zapiski', 'Vnesite zapiske', notesController, TextInputType.multiline),
             galleryCard(),
             Row(
@@ -166,31 +189,45 @@ class AddNewState extends State<AddNew> {
     travel.title = titleController.text;
     travel.date = dateController.text;
     travel.notes = notesController.text;
-    travel.location1 = NewExpandedState().location1Ctrl.text;
-    travel.location2 = NewExpandedState().location2Ctrl.text;
-    travel.location3 = NewExpandedState().location3Ctrl.text;
-    travel.location4 = NewExpandedState().location4Ctrl.text;
-    travel.location5 = NewExpandedState().location5Ctrl.text;
-    travel.location6 = NewExpandedState().location6Ctrl.text;
-    travel.time1 = NewExpandedState().time1Ctrl.text;
-    travel.time2 = NewExpandedState().time2Ctrl.text;
-    travel.time3 = NewExpandedState().time3Ctrl.text;
-    travel.time4 = NewExpandedState().time4Ctrl.text;
-    travel.time5 = NewExpandedState().time5Ctrl.text;
-    travel.time6 = NewExpandedState().time6Ctrl.text;
-    travel.height1 = NewExpandedState().height1Ctrl.text;
-    travel.height2 = NewExpandedState().height2Ctrl.text;
-    travel.height3 = NewExpandedState().height3Ctrl.text;
-    travel.height4 = NewExpandedState().height4Ctrl.text;
-    travel.height5 = NewExpandedState().height5Ctrl.text;
-    travel.height6 = NewExpandedState().height6Ctrl.text;
-    travel.finalLocation = travel.location1;
-    int res = int.tryParse(travel.time6) - int.tryParse(travel.time1);
-    //travel.finalTime = res.toString();
-    //int minHeight = [int.parse(travel.height1), int.parse(travel.height2), int.parse(travel.height3), int.parse(travel.height4), int.parse(travel.height5), int.parse(travel.height6)].reduce(min);
-    //int maxHeight = [int.parse(travel.height1), int.parse(travel.height2), int.parse(travel.height3), int.parse(travel.height4), int.parse(travel.height5), int.parse(travel.height6)].reduce(max);
-    //travel.finalHeight = (maxHeight - minHeight).toString();
-    print(res.toString() + "jadfsk");
+    travel.location1 = location1Ctrl.text;
+    travel.location2 = location2Ctrl.text;
+    travel.location3 = location3Ctrl.text;
+    travel.location4 = location4Ctrl.text;
+    travel.location5 = location5Ctrl.text;
+    travel.location6 = location6Ctrl.text;
+    travel.time1 = time1Ctrl.text;
+    travel.time2 = time2Ctrl.text;
+    travel.time3 = time3Ctrl.text;
+    travel.time4 = time4Ctrl.text;
+    travel.time5 = time5Ctrl.text;
+    travel.time6 = time6Ctrl.text;
+    travel.height1 = height1Ctrl.text;
+    travel.height2 = height2Ctrl.text;
+    travel.height3 = height3Ctrl.text;
+    travel.height4 = height4Ctrl.text;
+    travel.height5 = height5Ctrl.text;
+    travel.height6 = height6Ctrl.text;
+    travel.finalLocation = travel.location1 != null ? travel.location1 : '';
+    int res = (int.tryParse(travel.time6) ?? 0) - (int.tryParse(travel.time1) ?? 0);
+    print(res.toString() + 'res');
+    travel.finalTime = res.toString();
+    print(travel.finalTime);
+    List<int> myList = [(int.tryParse(travel.height1) ?? 0), (int.tryParse(travel.height2) ?? 0), (int.tryParse(travel.height3) ?? 0), (int.tryParse(travel.height4) ?? 0), (int.tryParse(travel.height5) ?? 0), (int.tryParse(travel.height6) ?? 0)];
+    List<int> myList2 = [];
+    for (int i = 0; i < myList.length; i++) {
+      if (myList[i] == 0) {
+        myList2.add(myList[i]);
+      }
+    }
+    if (myList2.length == 0) {
+      myList2.add(0);
+    }
+    int minHeight = myList.reduce(min);
+    print('min ' + minHeight.toString());
+    int maxHeight = myList.reduce(max);
+    print('max ' + maxHeight.toString());
+    travel.finalHeight = (maxHeight - minHeight).toString();
+    print(travel.finalHeight + 'finalH');
     dbHelper.addNewTravel(travel);
     Navigator.pop(context);
   }
