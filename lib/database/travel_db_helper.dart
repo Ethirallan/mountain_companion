@@ -42,9 +42,9 @@ class TravelDBHelper {
       travel.id = list[i]['id'];
       travel.title = list[i]['title'];
       travel.date = list[i]['date'];
-      travel.finalLocation = list[i]['location'];
-      travel.finalTime = list[i]['time'];
-      travel.finalHeight = list[i]['height'];
+      travel.finalLocation = list[i]['finalLocation'];
+      travel.finalTime = list[i]['finalTime'];
+      travel.finalHeight = list[i]['finalHeight'];
       travel.notes = list[i]['notes'];
       travel.photo1 = list[i]['photo1'];
       travel.photo2 = list[i]['photo2'];

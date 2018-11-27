@@ -207,27 +207,22 @@ class AddNewState extends State<AddNew> {
     travel.height4 = height4Ctrl.text;
     travel.height5 = height5Ctrl.text;
     travel.height6 = height6Ctrl.text;
-    travel.finalLocation = location1Ctrl.text.isNotEmpty ? location1Ctrl.text : '';
+    travel.finalLocation = travel.location1;
     int res = (int.tryParse(travel.time6) ?? 0) - (int.tryParse(travel.time1) ?? 0);
-    print(res.toString() + 'res');
     travel.finalTime = res.toString();
-    print(travel.finalTime);
     List<int> myList = [(int.tryParse(travel.height1) ?? 0), (int.tryParse(travel.height2) ?? 0), (int.tryParse(travel.height3) ?? 0), (int.tryParse(travel.height4) ?? 0), (int.tryParse(travel.height5) ?? 0), (int.tryParse(travel.height6) ?? 0)];
     List<int> myList2 = [];
     for (int i = 0; i < myList.length; i++) {
-      if (myList[i] == 0) {
+      if (myList[i] != 0) {
         myList2.add(myList[i]);
       }
     }
-    if (myList2.length == 0) {
+    if (myList2.isEmpty) {
       myList2.add(0);
     }
-    int minHeight = myList.reduce(min);
-    print('min ' + minHeight.toString());
-    int maxHeight = myList.reduce(max);
-    print('max ' + maxHeight.toString());
+    int minHeight = myList2.reduce(min);
+    int maxHeight = myList2.reduce(max);
     travel.finalHeight = (maxHeight - minHeight).toString();
-    print(travel.finalHeight + 'finalH');
     dbHelper.addNewTravel(travel);
     Navigator.pop(context);
   }

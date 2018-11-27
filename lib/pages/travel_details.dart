@@ -114,7 +114,7 @@ class TravelDetailsState extends State<TravelDetails> {
                 slivers: <Widget>[
                   SliverAppBar(
                     expandedHeight: 250.0,
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.blue,
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
                       title: Text(
@@ -148,9 +148,9 @@ class TravelDetailsState extends State<TravelDetails> {
                           child: Column(
                             children: <Widget>[
                               buildDataCard('Datum:', travel.date),
-                              myExpansionTile('Lokacija:', travel.finalLocation, locationList),
-                              myExpansionTile('Čas hoje:', travel.time1, timeList),
-                              myExpansionTile('Višinska razlika:', travel.height6, heightList),
+                              myExpansionTile('Lokacija:', 'Lokacija', travel.finalLocation, locationList),
+                              myExpansionTile('Čas hoje:', 'Ura', travel.finalTime, timeList),
+                              myExpansionTile('Višinska razlika:', 'Višina', travel.finalHeight, heightList),
                               buildDataCard('Zapiski:', travel.notes),
                               gallery(imgFileList),
                             ],
@@ -174,8 +174,7 @@ class TravelDetailsState extends State<TravelDetails> {
     );
   }
 
-  Widget myExpansionTile(String title, value, List list) {
-    //value = '';
+  Widget myExpansionTile(String title, title2, value, List list) {
     return Card(
       elevation: 4.0,
       child: ExpansionTile(
@@ -184,8 +183,8 @@ class TravelDetailsState extends State<TravelDetails> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Text(title, style: TextStyle(
-              fontSize: 18.0,
-              color: Colors.blueGrey,
+              fontSize: 20.0,
+              color: Colors.blue,
               fontWeight: FontWeight.bold),
             ),
             Text(value, style: TextStyle(
@@ -201,7 +200,7 @@ class TravelDetailsState extends State<TravelDetails> {
             shrinkWrap: true,
             itemCount: list.length,
             itemBuilder: (context, index) {
-              return expansionChild(title, list[index]);
+              return expansionChild(title2 + ' ' + (index + 1).toString() + ':', list[index]);
             },
           ),
         ],
@@ -217,14 +216,14 @@ class TravelDetailsState extends State<TravelDetails> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(title, style: TextStyle(
-              fontSize: 20.0,
-              color: Colors.blueGrey,
+              fontSize: 18.0,
+              color: Colors.green,
               fontWeight: FontWeight.bold),
           ),
           Container(
             padding: EdgeInsets.only(left: 10.0),
             child: Text(value, style: TextStyle(
-                fontSize: 22.0,
+                fontSize: 20.0,
                 color: Colors.blueGrey,
                 fontWeight: FontWeight.normal),
             ),
@@ -246,8 +245,8 @@ class TravelDetailsState extends State<TravelDetails> {
             child: Text(
               title,
               style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.blueGrey,
+                  fontSize: 20.0,
+                  color: Colors.blue,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -279,8 +278,8 @@ class TravelDetailsState extends State<TravelDetails> {
             child: Text(
               'Galerija:',
               style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.blueGrey,
+                  fontSize: 20.0,
+                  color: Colors.blue,
                   fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
             ),
