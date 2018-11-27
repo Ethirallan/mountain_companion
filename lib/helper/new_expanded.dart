@@ -137,7 +137,7 @@ class NewExpandedState extends State<NewExpanded> {
   }
 
   void removeInput() {
-    if (widgetList.length > 0) {
+    if (widgetList.isNotEmpty) {
       setState(() {
         widgetList.removeLast();
       });

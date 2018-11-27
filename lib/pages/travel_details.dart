@@ -48,63 +48,63 @@ class TravelDetailsState extends State<TravelDetails> {
 
               for (int i = 0; i < 6; i++) {
                 if (i == 0) {
-                  if (travel.location1.length > 1) {
+                  if (travel.location1.isNotEmpty) {
                     locationList.add(travel.location1);
                   }
-                  if (travel.time1.length > 1) {
+                  if (travel.time1.isNotEmpty) {
                     timeList.add(travel.time1);
                   }
-                  if (travel.height1.length > 1) {
+                  if (travel.height1.isNotEmpty) {
                     heightList.add(travel.height1);
                   }
                 } else if (i == 1) {
-                  if (travel.location2.length > 1) {
+                  if (travel.location2.isNotEmpty) {
                     locationList.add(travel.location2);
                   }
-                  if (travel.time2.length > 1) {
+                  if (travel.time2.isNotEmpty) {
                     timeList.add(travel.time2);
                   }
-                  if (travel.height2.length > 1) {
+                  if (travel.height2.isNotEmpty) {
                     heightList.add(travel.height2);
                   }
                 } else if (i == 2) {
-                  if (travel.location3.length > 1) {
+                  if (travel.location3.isNotEmpty) {
                     locationList.add(travel.location3);
                   }
-                  if (travel.time3.length > 1) {
+                  if (travel.time3.isNotEmpty) {
                     timeList.add(travel.time3);
                   }
-                  if (travel.height3.length > 1) {
+                  if (travel.height3.isNotEmpty) {
                     heightList.add(travel.height3);
                   }
                 } else if (i == 3) {
-                  if (travel.location4.length > 1) {
+                  if (travel.location4.isNotEmpty) {
                     locationList.add(travel.location4);
                   }
-                  if (travel.time4.length > 1) {
+                  if (travel.time4.isNotEmpty) {
                     timeList.add(travel.time4);
                   }
-                  if (travel.height4.length > 1) {
+                  if (travel.height4.isNotEmpty) {
                     heightList.add(travel.height4);
                   }
                 } else if (i == 4) {
-                  if (travel.location5.length > 1) {
+                  if (travel.location5.isNotEmpty) {
                     locationList.add(travel.location5);
                   }
-                  if (travel.time5.length > 1) {
+                  if (travel.time5.isNotEmpty) {
                     timeList.add(travel.time5);
                   }
-                  if (travel.height5.length > 1) {
+                  if (travel.height5.isNotEmpty) {
                     heightList.add(travel.height5);
                   }
                 } else if (i == 5) {
-                  if (travel.location6.length > 1) {
+                  if (travel.location6.isNotEmpty) {
                     locationList.add(travel.location6);
                   }
-                  if (travel.time6.length > 1) {
+                  if (travel.time6.isNotEmpty) {
                     timeList.add(travel.time6);
                   }
-                  if (travel.height6.length > 1) {
+                  if (travel.height6.isNotEmpty) {
                     heightList.add(travel.height6);
                   }
                 }
@@ -148,8 +148,8 @@ class TravelDetailsState extends State<TravelDetails> {
                           child: Column(
                             children: <Widget>[
                               buildDataCard('Datum:', travel.date),
-                              myExpansionTile('Lokacija:', travel.location1, locationList),
-                              myExpansionTile('Čas hoje:', travel.finalTime, timeList),
+                              myExpansionTile('Lokacija:', travel.finalLocation, locationList),
+                              myExpansionTile('Čas hoje:', travel.time1, timeList),
                               myExpansionTile('Višinska razlika:', travel.height6, heightList),
                               buildDataCard('Zapiski:', travel.notes),
                               gallery(imgFileList),
@@ -161,7 +161,7 @@ class TravelDetailsState extends State<TravelDetails> {
                   ),
                 ],
               );
-            } else if (snapshot.data.length == 0) {
+            } else if (snapshot.data.isEmpty) {
               return Text('Ni podatkov');
             }
           }

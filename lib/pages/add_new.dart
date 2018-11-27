@@ -207,7 +207,7 @@ class AddNewState extends State<AddNew> {
     travel.height4 = height4Ctrl.text;
     travel.height5 = height5Ctrl.text;
     travel.height6 = height6Ctrl.text;
-    travel.finalLocation = travel.location1 != null ? travel.location1 : '';
+    travel.finalLocation = location1Ctrl.text.isNotEmpty ? location1Ctrl.text : '';
     int res = (int.tryParse(travel.time6) ?? 0) - (int.tryParse(travel.time1) ?? 0);
     print(res.toString() + 'res');
     travel.finalTime = res.toString();
