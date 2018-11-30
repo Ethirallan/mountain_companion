@@ -347,7 +347,9 @@ class TravelDetailsState extends State<TravelDetails> {
             newTravel.photo5 = this.travel.photo5;
             newTravel.photo6 = this.travel.photo6;
             dbHelper2.updateTravel(newTravel);
-            TravelDetailsState().setState(getTravelInfo);
+            setState(() {
+              getTravelInfo();
+            });
           },
         );
       },

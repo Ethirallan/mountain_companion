@@ -261,10 +261,10 @@ class MyAlertState extends State<MyAlert> {
               stamp1.id = widget.id;
               dbHelper.updateStamp(stamp1);
             }
-            Navigator.pop(context);
             setState(() {
               getStampsFromDB();
             });
+            Navigator.pop(context);
           },
           child: Text(
             'POTRDI',
