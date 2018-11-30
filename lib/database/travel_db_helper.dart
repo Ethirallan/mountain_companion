@@ -20,16 +20,16 @@ class TravelDBHelper {
   initDB() async {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "traveltable.db");
-    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
+    var db = await openDatabase(path, version: 3, onCreate: _onCreate);
     return db;
   }
   
   void _onCreate(Database db, int version) async {
-    await db.execute('CREATE TABLE $tableName(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, date TEXT,finalLocation TEXT, '
-        'finalTime TEXT, finalHeight TEXT, notes TEXT,'
-        'photo1 TEXT, photo2 TEXT, photo3 TEXT, photo4 TEXT, photo5 TEXT, photo6 TEXT,'
-        'location1 TEXT, location2 TEXT, location3 TEXT, location4 TEXT, location5 TEXT, location6 TEXT,'
-        'time1 TEXT, time2 TEXT, time3 TEXT, time4 TEXT, time5 TEXT, time6 TEXT,'
+    await db.execute('CREATE TABLE $tableName(id INTEGER PRIMARY KEY AUTOINCREMENT, headerPhoto TEXT, title TEXT, date TEXT,finalLocation TEXT, '
+        'finalTime TEXT, finalHeight TEXT, notes TEXT, '
+        'photo1 TEXT, photo2 TEXT, photo3 TEXT, photo4 TEXT, photo5 TEXT, photo6 TEXT, '
+        'location1 TEXT, location2 TEXT, location3 TEXT, location4 TEXT, location5 TEXT, location6 TEXT, '
+        'time1 TEXT, time2 TEXT, time3 TEXT, time4 TEXT, time5 TEXT, time6 TEXT, '
         'height1 TEXT, height2 TEXT, height3 TEXT, height4 TEXT, height5 TEXT, height6 TEXT);');
   }
 
@@ -40,6 +40,7 @@ class TravelDBHelper {
     for (int i = 0; i < list.length; i++) {
       Travel travel = new Travel();
       travel.id = list[i]['id'];
+      travel.headerPhoto = list[i]['headerPhoto'];
       travel.title = list[i]['title'];
       travel.date = list[i]['date'];
       travel.finalLocation = list[i]['finalLocation'];
@@ -77,11 +78,11 @@ class TravelDBHelper {
 
   void addNewTravel(Travel travel) async {
     var dbConnection = await db;
-    String query = 'INSERT INTO $tableName(title, date, finalLocation, finalTime, finalHeight, notes, photo1, photo2, photo3, photo4, photo5, photo6,'
-      'location1, location2, location3, location4, location5, location6,'
-      'time1, time2, time3, time4, time5, time6,'
+    String query = 'INSERT INTO $tableName(headerPhoto, title, date, finalLocation, finalTime, finalHeight, notes, photo1, photo2, photo3, photo4, photo5, photo6, '
+      'location1, location2, location3, location4, location5, location6, '
+      'time1, time2, time3, time4, time5, time6, '
       'height1, height2, height3, height4, height5, height6) '
-      'VALUES(\'${travel.title}\', \'${travel.date}\', \'${travel.finalLocation}\', \'${travel.finalTime}\', \'${travel.finalHeight}\', \'${travel.notes}\', '
+      'VALUES(\'${travel.headerPhoto}\', \'${travel.title}\', \'${travel.date}\', \'${travel.finalLocation}\', \'${travel.finalTime}\', \'${travel.finalHeight}\', \'${travel.notes}\', '
       '\'${travel.photo1}\', \'${travel.photo2}\', \'${travel.photo3}\', \'${travel.photo4}\', \'${travel.photo5}\', \'${travel.photo6}\','
       '\'${travel.location1}\', \'${travel.location2}\', \'${travel.location3}\', \'${travel.location4}\', \'${travel.location5}\', \'${travel.location6}\','
       '\'${travel.time1}\', \'${travel.time2}\', \'${travel.time3}\', \'${travel.time4}\', \'${travel.time5}\', \'${travel.time6}\','
@@ -93,12 +94,12 @@ class TravelDBHelper {
 
   void updateTravel(Travel travel) async {
     var dbConnection = await db;
-    String query = 'UPDATE $tableName SET title=\'${travel.title}\', date=\'${travel.date}\', finalLocation=\'${travel.finalLocation}\',  finalTime=\'${travel.finalTime}\','
-        'finalHeight=\'${travel.finalHeight}\', notes=\'${travel.notes}\', photo1=\'${travel.photo1}\', photo2=\'${travel.photo2}\','
-        'photo3=\'${travel.photo3}\', photo4=\'${travel.photo4}\', photo5=\'${travel.photo5}\', photo6=\'${travel.photo6}\','
-        'location1=\'${travel.location1}\', location2=\'${travel.location2}\', location3=\'${travel.location3}\', location4=\'${travel.location4}\', location5=\'${travel.location5}\', location6=\'${travel.location6}\','
-        'time1=\'${travel.time1}\', time2=\'${travel.time2}\', time3=\'${travel.time3}\', time4=\'${travel.time4}\', time5=\'${travel.time5}\', time6=\'${travel.time6}\','
-        'heigth1=\'${travel.height1}\', heigth2=\'${travel.height2}\', heigth3=\'${travel.height3}\', heigth4=\'${travel.height4}\', heigth5=\'${travel.height5}\', heigth6=\'${travel.height6}\''
+    String query = 'UPDATE $tableName SET headerPhoto=\'${travel.headerPhoto}\', title=\'${travel.title}\', date=\'${travel.date}\', finalLocation=\'${travel.finalLocation}\',  finalTime=\'${travel.finalTime}\', '
+        'finalHeight=\'${travel.finalHeight}\', notes=\'${travel.notes}\', photo1=\'${travel.photo1}\', photo2=\'${travel.photo2}\', '
+        'photo3=\'${travel.photo3}\', photo4=\'${travel.photo4}\', photo5=\'${travel.photo5}\', photo6=\'${travel.photo6}\', '
+        'location1=\'${travel.location1}\', location2=\'${travel.location2}\', location3=\'${travel.location3}\', location4=\'${travel.location4}\', location5=\'${travel.location5}\', location6=\'${travel.location6}\', '
+        'time1=\'${travel.time1}\', time2=\'${travel.time2}\', time3=\'${travel.time3}\', time4=\'${travel.time4}\', time5=\'${travel.time5}\', time6=\'${travel.time6}\', '
+        'height1=\'${travel.height1}\', height2=\'${travel.height2}\', height3=\'${travel.height3}\', height4=\'${travel.height4}\', height5=\'${travel.height5}\', height6=\'${travel.height6}\' '
         'WHERE id=${travel.id}';
     await dbConnection.transaction((tran) async {
       return await tran.rawQuery(query);

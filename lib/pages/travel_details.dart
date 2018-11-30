@@ -4,6 +4,7 @@ import 'package:mountain_companion/database/travel_db_helper.dart';
 import 'package:mountain_companion/helper/confirmation_alert.dart';
 import 'package:mountain_companion/helper/constants.dart';
 import 'package:mountain_companion/models/travel.dart';
+import 'package:mountain_companion/pages/gallery_mode.dart';
 
 Future<List<Travel>> getTravelInfo() {
   var dbHelper = TravelDBHelper();
@@ -28,6 +29,8 @@ class TravelDetailsState extends State<TravelDetails> {
   List<String> locationList = [];
   List<String> timeList = [];
   List<String> heightList = [];
+  List<String> imgPaths;
+  List<String> imgPaths2 = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,13 +41,14 @@ class TravelDetailsState extends State<TravelDetails> {
           if (snapshot.data != null) {
             if (snapshot.hasData) {
               travel = snapshot.data[widget.myInt];
-              List<String> imgPaths = [travel.photo1, travel.photo2, travel.photo3, travel.photo4, travel.photo5, travel.photo6];
+              imgPaths = [travel.photo1, travel.photo2, travel.photo3, travel.photo4, travel.photo5, travel.photo6];
               for(int i = 0; i < imgPaths.length; i++) {
                 if (imgPaths[i].length > 8) {
                   imgFileList.add(File(imgPaths[i]));
+                  imgPaths2.add(imgPaths[i]);
                 }
               }
-              headerImage = imgFileList.length == 0 ? null : imgFileList[0]; //add defaultImg
+              headerImage = imgFileList.length == 0 ? null : imgFileList[0]; //add default img
 
               for (int i = 0; i < 6; i++) {
                 if (i == 0) {
@@ -121,7 +125,7 @@ class TravelDetailsState extends State<TravelDetails> {
                         travel.title,
                         style: TextStyle(),
                       ),
-                      background: Image.file(headerImage, //add default img!
+                      background: Image.file(File(travel.headerPhoto), //add default img!
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -299,7 +303,53 @@ class TravelDetailsState extends State<TravelDetails> {
       itemCount: list.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        return Image.file(list[index], fit: BoxFit.scaleDown);
+        return GestureDetector(
+          child: Image.file(list[index], fit: BoxFit.scaleDown),
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => GalleryMode(img: list[index],),
+            ),
+          ),
+          onDoubleTap: () {
+            Travel newTravel = new Travel();
+            var dbHelper2 = new TravelDBHelper();
+            newTravel.id = widget.travelID;
+            newTravel.headerPhoto = this.imgPaths2[index];
+            newTravel.title = this.travel.title;
+            newTravel.date = this.travel.date;
+            newTravel.finalLocation = this.travel.finalLocation;
+            newTravel.finalTime = this.travel.finalTime;
+            newTravel.finalHeight = this.travel.finalHeight;
+            newTravel.notes = this.travel.notes;
+            newTravel.location1 = this.travel.location1;
+            newTravel.location2 = this.travel.location2;
+            newTravel.location3 = this.travel.location3;
+            newTravel.location4 = this.travel.location4;
+            newTravel.location5 = this.travel.location5;
+            newTravel.location6 = this.travel.location6;
+            newTravel.time1 = this.travel.time1;
+            newTravel.time2 = this.travel.time2;
+            newTravel.time3 = this.travel.time3;
+            newTravel.time4 = this.travel.time4;
+            newTravel.time5 = this.travel.time5;
+            newTravel.time6 = this.travel.time6;
+            newTravel.height1 = this.travel.height1;
+            newTravel.height2 = this.travel.height2;
+            newTravel.height3 = this.travel.height3;
+            newTravel.height4 = this.travel.height4;
+            newTravel.height5 = this.travel.height5;
+            newTravel.height6 = this.travel.height6;
+            newTravel.photo1 = this.travel.photo1;
+            newTravel.photo2 = this.travel.photo2;
+            newTravel.photo3 = this.travel.photo3;
+            newTravel.photo4 = this.travel.photo4;
+            newTravel.photo5 = this.travel.photo5;
+            newTravel.photo6 = this.travel.photo6;
+            dbHelper2.updateTravel(newTravel);
+            TravelDetailsState().setState(getTravelInfo);
+          },
+        );
       },
     );
   }

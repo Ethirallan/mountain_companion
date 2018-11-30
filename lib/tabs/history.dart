@@ -94,7 +94,7 @@ class HistoryState extends State<History> {
                             Container(
                               padding: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
                               child: SizedBox.expand(
-                                child: Image.file(File(snapshot.data[index].photo1),
+                                child: Image.file(File(snapshot.data[index].headerPhoto),
                                   fit: BoxFit.cover,
                                 ),
                               ),

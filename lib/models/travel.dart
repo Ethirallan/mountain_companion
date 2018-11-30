@@ -1,6 +1,6 @@
 class Travel {
   int id;
-  String title, date, finalLocation, finalTime, finalHeight, notes;
+  String headerPhoto, title, date, finalLocation, finalTime, finalHeight, notes;
   String location1, location2, location3, location4, location5, location6;
   String time1, time2, time3, time4, time5, time6;
   String height1, height2, height3, height4, height5, height6;

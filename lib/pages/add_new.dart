@@ -186,6 +186,7 @@ class AddNewState extends State<AddNew> {
 
   void _saveToDB() {
     var dbHelper = new TravelDBHelper();
+    travel.headerPhoto = travel.photo1;
     travel.title = titleController.text;
     travel.date = dateController.text;
     travel.notes = notesController.text;
